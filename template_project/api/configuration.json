@@ -1,0 +1,9 @@
+{
+  "title": "{{title_name}}",
+  "description": "",
+  "version": "v1",
+  "credentials": true,
+  "origins": [ "*" ],
+  "methods": [ "*" ],
+  "headers": [ "*" ]
+}
