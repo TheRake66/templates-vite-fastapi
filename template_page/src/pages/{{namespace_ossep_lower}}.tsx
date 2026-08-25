@@ -14,18 +14,9 @@ export default function {{title_name}}({}: {{title_name}}Props) {
 
   const [value, setValue] = useState('');
 
-  const mount = () => {
-    
-  };
-
-  const unmount = () => {
-    
-  };
-
   useEffect(() => {
-    mount();
-    return unmount;
-  });
+    
+  }, []);
 
   return (
     <main className={styles.container}>
