@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./assets/banner.png" alt="Fast" width=100%>
+  <img src="./banner.jpg" alt="Fast" width=100%>
 </div>
 
 # Template React
