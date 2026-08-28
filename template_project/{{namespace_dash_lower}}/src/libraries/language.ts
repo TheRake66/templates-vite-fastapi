@@ -14,10 +14,9 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import resourcesToBackend from 'i18next-resources-to-backend';
 import configuration from '../configuration.json';
 import type { LanguageType } from '../enums/language.type.ts';
-
-import {{language_short}} from '../locales/{{language_short}}.json';
 
 const defaultLang = configuration.default.language;
 const storageKey = configuration.localstorage.language;
@@ -31,13 +30,13 @@ export function initLanguage(): void {
   i18n
     .use(LanguageDetector)
     .use(initReactI18next)
+    .use(resourcesToBackend((language: string, namespace: string) => 
+        import(`../locales/${language}/${namespace}.json`)))
     .init({
       lng: language,
       fallbackLng: defaultLang,
-      interpolation: { escapeValue: false },
-      resources: {
-        {{language_short}}: { translation: {{language_short}} }
-      }});
+      ns: ['pages', 'components'],
+      interpolation: { escapeValue: false }});
 }
 
 /**

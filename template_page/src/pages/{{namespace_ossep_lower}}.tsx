@@ -21,7 +21,7 @@ import styles from './{{lower_name}}.module.scss';
  * Logique de la page {{title_name}}.
  */
 export default function {{title_name}}() {
-  const { t, i18n } = useTranslation('', { keyPrefix: 'pages.{{namespace_dots_lower}}' });
+  const { t, i18n } = useTranslation('pages', { keyPrefix: '{{namespace_dots_lower}}' });
   const navigate = useNavigate();
   const { } = useParams();
 

@@ -28,7 +28,7 @@ interface {{title_name}}Props {
  * Logique du composant {{title_name}}.
  */
 export default function {{title_name}}({ }: {{title_name}}Props) {
-  const { t, i18n } = useTranslation('', { keyPrefix: 'components.{{namespace_dots_lower}}' });
+  const { t, i18n } = useTranslation('components', { keyPrefix: '{{namespace_dots_lower}}' });
   const navigate = useNavigate();
   const { } = useParams();
 
