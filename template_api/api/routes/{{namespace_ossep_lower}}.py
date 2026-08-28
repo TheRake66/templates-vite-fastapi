@@ -1,42 +1,30 @@
+"""
+Nom du module         : {{lower_name}}.py
+Chemin du package     : {{namespace_dash_lower}}
+Description           : 
+
+Auteur                : {{user_name}}
+Date de création      : {{datetime_full}}
+Dernière modification : {{datetime_full}}
+Version               : 1.0.0
+Licence               : {{licence_name}}
+
+Notes                 : 
+"""
+
 from api.utils.response import Response
 from api.utils.structure import Structure
 from fastapi import APIRouter
 from typing import Optional
 
-router = APIRouter(prefix="/{{namespace_back_lower}}s")
+# Point d'entrée de l'API {{title_name}}.
+router = APIRouter(prefix="/{{namespace_back_lower}}")
 
-class {{title_name}}Create(Structure):
-  id: int
-  name: str
-  description: str
-  deleted: bool = False
-
-class {{title_name}}Update(Structure):
-  id: int
-  name: Optional[str] = None
-  description: Optional[str] = None
-  deleted: Optional[bool] = False
+class {{title_name}}(Structure):
+  """Schéma de données de {{title_name}}."""
+  pass
 
 @router.get("/")
-async def get_all_{{lower_name}}s(limit: int = 10) -> Response:
-  return Response(message=f"Liste des {limit} premiers éléments.")
-
-@router.get("/{id}")
-async def get_{{lower_name}}_by_id(id: int) -> dict:
-  return Response(message=f"Recuperation de l'élément {id}.")
-
-@router.post("/")
-async def create_{{lower_name}}(item: {{title_name}}Create) -> dict:
-  return Response(message=f"Création de la ressource {item}.")
-
-@router.put("/{id}")
-async def update_{{lower_name}}_full(id: int, item: {{title_name}}Create) -> dict:
-  return Response(message=f"Remplacement intégral de l'élément {id} par {item}.")
-
-@router.patch("/{id}")
-async def update_{{lower_name}}_partial(id: int, item: {{title_name}}Update) -> dict:
-  return Response(message=f"Remplacement partiel de l'élément {id} par {item.filter()}.")
-
-@router.delete("/{id}")
-async def delete_{{lower_name}}(id: int):
-  return Response(message=f"Suppression de l'élément {id}.")
+async def hello_{{lower_name}}() -> Response:
+  """Racine de l'entrée de l'API."""
+  return Response(message=f"Bonjour depuis l'API {{title_name}}.")

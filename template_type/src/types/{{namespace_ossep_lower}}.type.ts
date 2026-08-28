@@ -1,5 +1,5 @@
 /**
- * Nom du module         : {{lower_name}}.scss
+ * Nom du module         : {{lower_name}}.type.ts
  * Chemin du package     : {{namespace_dash_lower}}
  * Description           : 
  * 
@@ -13,8 +13,8 @@
  */
 
 /**
- * Style de la classe {{title_name}}.
+ * Définition du type {{title_name}}Type.
  */
-.{{lower_name}} {
+export type {{title_name}}Type = {
   
 }

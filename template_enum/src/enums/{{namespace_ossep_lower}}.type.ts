@@ -1,5 +1,5 @@
 /**
- * Nom du module         : {{lower_name}}.scss
+ * Nom du module         : {{lower_name}}.type.ts
  * Chemin du package     : {{namespace_dash_lower}}
  * Description           : 
  * 
@@ -13,8 +13,13 @@
  */
 
 /**
- * Style de la classe {{title_name}}.
+ * Liste d'énumération {{title_name}}.
  */
-.{{lower_name}} {
+export const {{title_name}} = {
   
-}
+} as const;
+
+/**
+ * Conversion en type {{title_name}}Type.
+ */
+export type {{title_name}}Type = typeof {{title_name}}[keyof typeof {{title_name}}];

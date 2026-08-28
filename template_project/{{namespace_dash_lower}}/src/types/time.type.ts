@@ -1,6 +1,6 @@
 /**
- * Nom du module         : responsive.scss
- * Description           : Variables utilisées pour le responsive.
+ * Nom du module         : time.type.ts
+ * Description           : Structure des données de temps.
  * 
  * Auteur                : TheRake66
  * Date de création      : 2026-08-28 04:01:51
@@ -11,5 +11,11 @@
  * Notes                 : 
  */
 
-$mobile-width: 600px;
-$tablet-width: 1000px;
+/**
+ * Définition du type TimeType.
+ */
+export type TimeType = {
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
