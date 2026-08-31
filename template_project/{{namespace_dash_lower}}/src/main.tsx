@@ -50,7 +50,7 @@ createRoot(document.getElementById('root')!).render(
         <AnalyticsTracker />
         <Routes>
           
-          <Route path="/" element={<Navigate to="/{{language_short}}/" replace />} />
+          <Route path="/" element={<Navigate to="/" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
 
         </Routes>
