@@ -36,5 +36,4 @@ export default function {{title_name}}() {
       Bonjour la page {{title_name}} !
     </main>
   );
-
 }

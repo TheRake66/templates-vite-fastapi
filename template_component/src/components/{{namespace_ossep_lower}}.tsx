@@ -43,5 +43,4 @@ export default function {{title_name}}({ }: {{title_name}}Props) {
       Bonjour le composant {{title_name}} !
     </div>
   );
-
 }

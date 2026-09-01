@@ -13,11 +13,11 @@
  * Notes                 : 
  */
 
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import { Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import { initTheme } from './libraries/theme.ts';
 import { initFullscreen } from './libraries/fullscreen.ts';
@@ -27,10 +27,10 @@ import { initAnalytics, AnalyticsTracker } from './libraries/analytics.ts';
 /**
  * Injection des fichiers de style.
  */
-import './font.scss'
-import './theme.scss'
-import './variable.scss'
-import './global.scss'
+import './font.scss';
+import './theme.scss';
+import './variable.scss';
+import './global.scss';
 
 /**
  * Initialisation des librairies.
@@ -51,8 +51,11 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
           
           <Route path="/" element={<Navigate to="/" replace />} />
+          
+          
+          
           <Route path="*" element={<Navigate to="/" replace />} />
-
+          
         </Routes>
       </Router>
     </HelmetProvider>
