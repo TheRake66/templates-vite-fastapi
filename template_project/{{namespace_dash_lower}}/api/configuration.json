@@ -3,7 +3,21 @@
   "description": "",
   "version": "v1",
   "credentials": true,
-  "origins": [ "*" ],
-  "methods": [ "*" ],
-  "headers": [ "*" ]
+  "origins": ["*"],
+  "methods": ["*"],
+  "headers": ["*"],
+  "database": {
+    "enable": false,
+    "sqlite": true,
+    "create": true,
+    "path": "{{lower_name}}.db",
+    "logs": true,
+    "remote": {
+      "driver": "postgresql+psycopg2",
+      "username": "admin",
+      "password": "admin",
+      "address": "localhost",
+      "port": 5432
+    }
+  }
 }

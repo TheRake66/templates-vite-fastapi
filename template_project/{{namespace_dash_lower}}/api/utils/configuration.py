@@ -11,10 +11,11 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
+from typing import Any
 import json
 
 # Dictionnaire de la configuration de FastAPI.
-configuration: dict | None = None
+configuration: dict[str, Any] | None = None
 
 # Charge la configuration premier import.
 if not configuration:

@@ -28,11 +28,11 @@ application.add_middleware(CORSMiddleware,
   allow_methods=configuration["methods"], 
   allow_headers=configuration["headers"])
 
-def add_routers(*routers: APIRouter) -> None:
+def __add_routers(*routers: APIRouter) -> None:
   """Enregistre un ensemble de routeurs en ajoutant un préfixe global.
 
-  Args:
-      *routers: Les routeurs à ajouter à l'application.
+  Arguments:
+    *routers: Les routeurs à ajouter à l'application.
   """
   prefix = f"/api/{configuration["version"]}"
   for router in routers:
