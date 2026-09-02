@@ -7,11 +7,11 @@
   "methods": ["*"],
   "headers": ["*"],
   "database": {
-    "enable": false,
     "sqlite": true,
+    "dbpath": "api/{{lower_name}}.db",
     "create": true,
-    "path": "{{lower_name}}.db",
-    "logs": true,
+    "memory": false,
+    "debug": true,
     "remote": {
       "driver": "postgresql+psycopg2",
       "username": "admin",

@@ -12,7 +12,10 @@ Notes                 :
 """
 
 from api.utils.configuration import configuration
+from api.utils.autoload import import_all
+from api.utils.ormbase import OrmBase
 from sqlalchemy import create_engine, Engine
+from pathlib import Path
 from typing import Any
 
 def __get_sqlite(database: dict[str, Any]) -> str:
@@ -24,7 +27,8 @@ def __get_sqlite(database: dict[str, Any]) -> str:
   Returns:
     str: L'URL de connexion.
   """
-  return f"sqlite://{database["pathto"]}"
+  return "sqlite:///:memory:" if database["memory"] else \
+        f"sqlite:///{database["dbpath"]}"
 
 def __get_remote(database: dict[str, Any]) -> str:
   """Retourne l'URL de connexion pour une base distante.
@@ -38,7 +42,16 @@ def __get_remote(database: dict[str, Any]) -> str:
   remote: dict = database["remote"]
   credential: str = f"{remote["username"]}:{remote["password"]}"
   connection: str = f"{remote["address"]}:{remote["port"]}"
-  return f"{remote["driver"]}://{credential}@{connection}/{database["pathto"]}"
+  return f"{remote["driver"]}://{credential}@{connection}/{database["dbpath"]}"
+
+def __create_all(engine: Engine) -> None:
+  """Charge tous les modules des tables, puis les crée de la base de données.
+
+  Arguments:
+    database (dict[str, Any]): La connexion à la base de données.
+  """
+  import_all(Path("api/bases"))
+  OrmBase.metadata.create_all(engine)
 
 # Objet contenant la connexion à la base de données.
 engine: Engine | None = None
@@ -46,11 +59,8 @@ engine: Engine | None = None
 # Initialise la connexion premier import.
 if not engine:
   database: dict[str, Any] = configuration["database"]
-  if database["enable"]:
-    url: str = \
-      __get_sqlite(database) if database["sqlite"] else \
-      __get_remote(database)
-    engine = create_engine(url)
-
-
-
+  url: str = \
+    __get_sqlite(database) if database["sqlite"] else \
+    __get_remote(database)
+  engine = create_engine(url, echo=database["debug"])
+  if database["create"]: __create_all(engine)

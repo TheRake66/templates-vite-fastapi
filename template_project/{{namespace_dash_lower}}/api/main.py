@@ -14,6 +14,8 @@ Notes                 :
 from fastapi import FastAPI, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from api.utils.configuration import configuration
+from api.utils.autoload import import_all
+from pathlib import Path
 
 # Définition de l'application.
 application = FastAPI(
@@ -28,12 +30,9 @@ application.add_middleware(CORSMiddleware,
   allow_methods=configuration["methods"], 
   allow_headers=configuration["headers"])
 
-def __add_routers(*routers: APIRouter) -> None:
-  """Enregistre un ensemble de routeurs en ajoutant un préfixe global.
-
-  Arguments:
-    *routers: Les routeurs à ajouter à l'application.
-  """
-  prefix = f"/api/{configuration["version"]}"
-  for router in routers:
-    application.include_router(router, prefix=prefix)
+# Charge toutes les routes.
+prefix: str = f"/api/{configuration["version"]}"
+routes: Path = Path("api/routes")
+routers: APIRouter = import_all(routes, "router")
+for router in routers:
+  application.include_router(router, prefix=prefix)

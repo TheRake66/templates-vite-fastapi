@@ -14,6 +14,7 @@ Notes                 :
 
 from api.utils.response import Response
 from api.utils.structure import Structure
+from api.utils.database import engine
 from fastapi import APIRouter
 from typing import Optional
 
@@ -27,4 +28,4 @@ class {{title_name}}(Structure):
 @router.get("/")
 async def hello_{{lower_name}}() -> Response:
   """Racine de l'entrée de l'API."""
-  return Response(message=f"Bonjour depuis l'API {{title_name}}.")
+  return Response(message="Bonjour depuis l'API {{title_name}}.")
