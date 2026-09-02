@@ -32,7 +32,7 @@ export default function {{title_name}}({ }: {{title_name}}Props) {
   const navigate = useNavigate();
   const { } = useParams();
 
-  const [value, setValue] = useState('');
+  const [ value, setValue ] = useState('');
 
   useEffect(() => {
     

@@ -25,7 +25,7 @@ export default function {{title_name}}() {
   const navigate = useNavigate();
   const { } = useParams();
 
-  const [value, setValue] = useState('');
+  const [ value, setValue ] = useState('');
 
   useEffect(() => {
     
