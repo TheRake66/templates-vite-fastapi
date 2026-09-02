@@ -32,7 +32,5 @@ application.add_middleware(CORSMiddleware,
 
 # Charge toutes les routes.
 prefix: str = f"/api/{configuration["version"]}"
-routes: Path = Path("api/routes")
-routers: APIRouter = import_all(routes, "router")
-for router in routers:
+for router in import_all(Path("api/routes"), "router"):
   application.include_router(router, prefix=prefix)

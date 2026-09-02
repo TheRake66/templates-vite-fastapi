@@ -12,6 +12,7 @@ Notes                 :
 """
 
 from pydantic import BaseModel
+from typing import Any
 
 class Response(BaseModel):
   """Représente la structure standard d'une réponse API.
@@ -19,8 +20,8 @@ class Response(BaseModel):
   Attributes:
     message (str): Un message descriptif concernant le résultat de la requête.
     code (int): Le code de statut ou code d'erreur associé. Par défaut à 0.
-    content (dict | None): Les données utiles renvoyées par l'opération. Par défaut à None.
+    content (Any): Les données utiles renvoyées par l'opération. Par défaut à None.
   """
   message: str
   code: int = 0
-  content: dict | None = None
+  content: Any = None

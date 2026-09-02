@@ -39,7 +39,7 @@ def __get_remote(database: dict[str, Any]) -> str:
   Returns:
     str: L'URL de connexion.
   """
-  remote: dict = database["remote"]
+  remote: dict[str, Any] = database["remote"]
   credential: str = f"{remote["username"]}:{remote["password"]}"
   connection: str = f"{remote["address"]}:{remote["port"]}"
   return f"{remote["driver"]}://{credential}@{connection}/{database["dbpath"]}"
