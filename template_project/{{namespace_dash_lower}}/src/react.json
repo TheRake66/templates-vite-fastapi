@@ -19,8 +19,8 @@
     "fullscreen": "fullscreen"
   },
   "backend": {
-    "address": "{{backend_ip}}",
-    "port": {{backend_port}},
+    "address": "localhost",
+    "port": 8000,
     "wspath": "/socket.io",
     "version": "v1",
     "ssl": false,
