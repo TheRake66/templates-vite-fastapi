@@ -23,7 +23,7 @@ svconf: Dict[str, Any] = configuration["server"]
 run(application, 
   host=svconf["address"], 
   port=svconf["port"],
-  reload=svconf["reload"]
+  reload=svconf["reload"],
   access_log=svconf["debug"])
 
 # Route racine de l'API REST.
