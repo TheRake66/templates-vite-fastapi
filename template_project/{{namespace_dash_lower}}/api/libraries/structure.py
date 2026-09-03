@@ -14,15 +14,15 @@ Notes                 :
 """
 
 from pydantic import BaseModel
-from typing import Any
+from typing import Any, Dict
 
 class Structure(BaseModel):
   """Représente la structure standard des paramètres d'une requête API."""
   
-  def filter_empty(self) -> dict[str, Any]:
+  def filter_empty(self) -> Dict[str, Any]:
     """Renvoi un dictionnaire d'attribut/valeur en retirantles attributs sans valeur.
 
     Returns:
-      dict[str, Any]: Le dictionnaire filtré.
+      Dict[str, Any]: Le dictionnaire filtré.
     """
     return self.model_dump(exclude_unset=True)

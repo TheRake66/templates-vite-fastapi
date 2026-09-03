@@ -1,11 +1,23 @@
 {
-  "title": "{{title_name}}",
-  "description": "",
-  "version": "v1",
-  "credentials": true,
-  "origins": ["*"],
-  "methods": ["*"],
-  "headers": ["*"],
+  "server": {
+    "address": "0.0.0.0",
+    "port": 5000,
+    "debug": true
+  },
+  "apirest": {
+    "title": "{{title_name}}",
+    "description": "",
+    "version": "v1",
+    "credentials": true,
+    "origins": ["*"],
+    "methods": ["*"],
+    "headers": ["*"]
+  },
+  "websocket": {
+    "origins": ["*"],
+    "urlpath": "/socket.io",
+    "debug": true
+  },
   "database": {
     "sqlite": true,
     "dbpath": "api/{{lower_name}}.db",

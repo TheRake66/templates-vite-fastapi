@@ -1,6 +1,6 @@
 """
 Nom du module         : main.py
-Description           : Point d'entrée du serveur FastAPI.
+Description           : Point d'entrée de l'application.
 
 Auteur                : TheRake66
 Date de création      : 2026-08-28 04:01:51
@@ -11,25 +11,29 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from api.utils.configuration import config
-from api.utils.autoload import import_all
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI
+from api.services.configuration import configuration
+from api.services.application import application
+from api.services.websocket import websocket
+from api.services.apirest import apirest
+from typing import Any, Dict
+from uvicorn import run
 
-# Définition de l'application.
-application = FastAPI(
-  title=config["title"],
-  description=config["description"],
-  version=config["version"])
+# Lancement de l'application.
+svconf: Dict[str, Any] = configuration["server"]
+run(application, access_log=svconf["debug"],
+  host=svconf["address"], port=svconf["port"])
 
-# Autorisations des middlewares.
-application.add_middleware(CORSMiddleware,
-  allow_credentials=config["credentials"],
-  allow_origins=config["origins"], 
-  allow_methods=config["methods"], 
-  allow_headers=config["headers"])
+# Route racine de l'API REST.
+@apirest.get("/")
+async def root() -> None:
+  pass
 
-# Charge toutes les routes.
-prefix: str = f"/api/{config["version"]}"
-for router in import_all("api/routes", "router"):
-  application.include_router(router, prefix=prefix)
+# Gestion de la connexion aux WebSockets.
+@websocket.event
+async def connect(sid: str, environ: Dict[str, Any]) -> None:
+  pass
+
+# Gestion de la déconnexion aux WebSockets.
+@websocket.event
+async def disconnect(sid: str) -> None:
+  pass

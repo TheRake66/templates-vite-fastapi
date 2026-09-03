@@ -12,7 +12,7 @@ Licence               : {{licence_name}}
 Notes                 : 
 """
 
-from api.utils.ormbase import OrmBase
+from api.libraries.ormbase import OrmBase
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey
 

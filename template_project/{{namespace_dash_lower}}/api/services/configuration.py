@@ -11,13 +11,13 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from typing import Any, Optional
+from typing import Any, Optional, Dict
 import json
 
 # Dictionnaire de la configuration de FastAPI.
-config: Optional[dict[str, Any]] = None
+configuration: Optional[Dict[str, Any]] = None
 
 # Charge la configuration premier import.
-if not config:
+if not configuration:
   with open("api/fastapi.json") as buffer:
-    config = json.load(buffer)
+    configuration = json.load(buffer)

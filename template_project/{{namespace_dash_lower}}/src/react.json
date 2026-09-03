@@ -13,16 +13,18 @@
   "cookies": {
     
   },
-  "localstorage": {
+  "storage": {
     "language": "language",
     "theme": "theme",
     "fullscreen": "fullscreen"
   },
-  "api": {
+  "backend": {
     "address": "{{backend_ip}}",
     "port": {{backend_port}},
+    "wspath": "/socket.io",
     "version": "v1",
-    "ssl": false
+    "ssl": false,
+    "timeout": 10000
   },
   "analytics": {
     "googleid": "G-"

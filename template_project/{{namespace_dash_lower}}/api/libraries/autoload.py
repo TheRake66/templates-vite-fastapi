@@ -12,11 +12,11 @@ Notes                 :
 """
 
 from importlib import import_module
-from typing import Any, Optional
+from typing import Any, List, Optional
 from types import ModuleType
 from pathlib import Path
 
-def import_all(package: str, varname: Optional[str] = None) -> list[Any]:
+def import_all(package: str, varname: Optional[str] = None) -> List[Any]:
   """Importe récursivement tous les modules d'un dossier et retourne un tableau d'attributs.
 
   Arguments:
@@ -24,9 +24,9 @@ def import_all(package: str, varname: Optional[str] = None) -> list[Any]:
     varname (Optional[str]): Le nom de l'attribut à récupérer dans les modules. Aucun par défaut.
 
   Returns:
-    list[Any]: Les valeurs des attributs si un nom a été passé.
+    List[Any]: Les valeurs des attributs si un nom a été passé.
   """
-  values: list[Any] = []
+  values: List[Any] = []
   for file in Path(package).rglob("*.py"):
     module: str = ".".join(file.with_suffix("").parts)
     loaded: ModuleType = import_module(module)

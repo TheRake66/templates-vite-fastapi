@@ -12,21 +12,29 @@ Licence               : {{licence_name}}
 Notes                 : 
 """
 
-from api.utils.response import Response
-from api.utils.structure import Structure
-from api.utils.websocket import handle_websocket
-from api.utils.database import engine
+from api.libraries.response import Response
+from api.libraries.structure import Structure
+from api.services.database import database
+from api.services.websocket import websocket
+from typing import Any, Dict, Optional
 from fastapi import APIRouter
-from typing import Optional
 
-# Point d'entrée de l'API {{title_name}}.
-router = APIRouter(prefix="/{{namespace_back_lower}}")
+# Point d'entrée de {{title_name}}.
+NAMESPACE: str = "{{namespace_dash_lower}}"
+URLPATH: str = "{{namespace_back_lower}}"
+router = APIRouter(prefix=f"/{URLPATH}")
 
 class {{title_name}}(Structure):
   """Schéma de données de {{title_name}}."""
   pass
 
-@router.get("/")
-async def hello_{{lower_name}}() -> Response:
-  """Racine de l'entrée de l'API."""
-  return Response(message="Bonjour depuis l'API {{title_name}}.")
+@router.get("/hello")
+async def hello_apirest() -> Response:
+  """Fonction qui dit bonjour pour l'API REST."""
+  return Response(message="Bonjour depuis l'API REST {{title_name}}.")
+
+@websocket.on(f"{NAMESPACE}:hello")
+async def hello_websocket() -> None:
+  """Fonction qui dit bonjour pour le WebSocket."""
+  await websocket.emit(f"{NAMESPACE}:hello", \
+    Response(message="Bonjour depuis le WebSocket {{title_name}}."))
