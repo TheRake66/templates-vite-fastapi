@@ -11,11 +11,11 @@
  * Notes                 : 
  */
 
-import configuration from '../configuration.json';
+import config from '../react.json';
 import type { ThemeType } from '../enums/theme.type.ts';
 
-const defaultTheme = configuration.default.theme;
-const storageKey = configuration.localstorage.theme;
+const defaultTheme = config.default.theme;
+const storageKey = config.localstorage.theme;
 
 /**
  * Initialise le thème des couleurs en récupérant la valeur enregistrée 

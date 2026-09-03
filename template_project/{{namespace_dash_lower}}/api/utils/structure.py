@@ -19,7 +19,7 @@ from typing import Any
 class Structure(BaseModel):
   """Représente la structure standard des paramètres d'une requête API."""
   
-  def filter(self) -> dict[str, Any]:
+  def filter_empty(self) -> dict[str, Any]:
     """Renvoi un dictionnaire d'attribut/valeur en retirantles attributs sans valeur.
 
     Returns:

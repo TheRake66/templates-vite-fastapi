@@ -12,16 +12,16 @@
  */
 
 import axios from 'axios';
-import configuration from '../configuration.json';
+import config from '../react.json';
 
-const conf = configuration.api;
-const prot = conf.ssl ? 'https' : 'http';
+const apic = config.api;
+const prot = apic.ssl ? 'https' : 'http';
 
 /**
  * Objet contenant la connexion à l'API.
  */
 const api = axios.create({
-  baseURL: `${prot}://${conf.server}:${conf.port}/api/${conf.version}/`,
+  baseURL: `${prot}://${apic.address}:${apic.port}/api/${apic.version}/`,
   headers: { 'Content-Type': 'application/json' },
   timeout: 10000
 });

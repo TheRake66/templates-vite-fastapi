@@ -14,6 +14,7 @@ Notes                 :
 
 from api.utils.response import Response
 from api.utils.structure import Structure
+from api.utils.websocket import handle_websocket
 from api.utils.database import engine
 from fastapi import APIRouter
 from typing import Optional

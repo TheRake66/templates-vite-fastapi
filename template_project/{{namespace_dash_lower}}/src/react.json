@@ -3,7 +3,7 @@
     "name": "{{title_name}}",
     "version": "1.0.0",
     "author": "{{creator_name}}",
-    "github": ""
+    "github": "https://github.com/{{creator_name}}/{{lower_name}}"
   },
   "default": {
     "language": "{{language_short}}",
@@ -19,7 +19,7 @@
     "fullscreen": "fullscreen"
   },
   "api": {
-    "server": "{{backend_ip}}",
+    "address": "{{backend_ip}}",
     "port": {{backend_port}},
     "version": "v1",
     "ssl": false

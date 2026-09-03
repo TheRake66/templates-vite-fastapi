@@ -11,12 +11,11 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from api.utils.configuration import configuration
+from api.utils.configuration import config
 from api.utils.autoload import import_all
 from api.utils.ormbase import OrmBase
 from sqlalchemy import create_engine, Engine
-from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 def __get_sqlite(database: dict[str, Any]) -> str:
   """Retourne l'URL de connexion pour SQLite.
@@ -50,15 +49,15 @@ def __create_all(engine: Engine) -> None:
   Arguments:
     database (dict[str, Any]): La connexion à la base de données.
   """
-  import_all(Path("api/bases"))
+  import_all("api/bases")
   OrmBase.metadata.create_all(engine)
 
 # Objet contenant la connexion à la base de données.
-engine: Engine | None = None
+engine: Optional[Engine] = None
 
 # Initialise la connexion premier import.
 if not engine:
-  database: dict[str, Any] = configuration["database"]
+  database: dict[str, Any] = config["database"]
   url: str = \
     __get_sqlite(database) if database["sqlite"] else \
     __get_remote(database)

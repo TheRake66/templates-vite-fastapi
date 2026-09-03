@@ -11,26 +11,25 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from fastapi import FastAPI, APIRouter
-from fastapi.middleware.cors import CORSMiddleware
-from api.utils.configuration import configuration
+from api.utils.configuration import config
 from api.utils.autoload import import_all
-from pathlib import Path
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI
 
 # Définition de l'application.
 application = FastAPI(
-  title=configuration["title"],
-  description=configuration["description"],
-  version=configuration["version"])
+  title=config["title"],
+  description=config["description"],
+  version=config["version"])
 
 # Autorisations des middlewares.
 application.add_middleware(CORSMiddleware,
-  allow_credentials=configuration["credentials"],
-  allow_origins=configuration["origins"], 
-  allow_methods=configuration["methods"], 
-  allow_headers=configuration["headers"])
+  allow_credentials=config["credentials"],
+  allow_origins=config["origins"], 
+  allow_methods=config["methods"], 
+  allow_headers=config["headers"])
 
 # Charge toutes les routes.
-prefix: str = f"/api/{configuration["version"]}"
-for router in import_all(Path("api/routes"), "router"):
+prefix: str = f"/api/{config["version"]}"
+for router in import_all("api/routes", "router"):
   application.include_router(router, prefix=prefix)
