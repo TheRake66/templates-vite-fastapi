@@ -1,8 +1,8 @@
 """
 Nom du module         : structure.py
 Description           : 
-  Module servant de base aux structures de parametres
-  des requetes vers l'API.
+  Module servant de base aux structures de paramètres
+  des requêtes vers l'API.
 
 Auteur                : TheRake66
 Date de création      : 2026-08-28 04:01:51

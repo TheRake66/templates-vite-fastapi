@@ -19,6 +19,6 @@ from sqlalchemy import ForeignKey
 class {{title_name}}(OrmBase):
   """Schéma de la table {{title_name}}."""
   
-  __tablename__ = "{{lower_name}}"
+  __tablename__: str = "{{lower_name}}"
   
   id: Mapped[int] = mapped_column(primary_key=True)

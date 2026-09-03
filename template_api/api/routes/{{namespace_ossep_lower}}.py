@@ -12,17 +12,16 @@ Licence               : {{licence_name}}
 Notes                 : 
 """
 
-from api.libraries.response import Response
 from api.libraries.structure import Structure
-from api.services.database import database
+from api.libraries.response import Response
 from api.services.websocket import websocket
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 from fastapi import APIRouter
 
 # Point d'entrée de {{title_name}}.
 NAMESPACE: str = "{{namespace_dash_lower}}"
 URLPATH: str = "{{namespace_back_lower}}"
-router = APIRouter(prefix=f"/{URLPATH}")
+router: APIRouter = APIRouter(prefix=f"/{URLPATH}")
 
 class {{title_name}}(Structure):
   """Schéma de données de {{title_name}}."""

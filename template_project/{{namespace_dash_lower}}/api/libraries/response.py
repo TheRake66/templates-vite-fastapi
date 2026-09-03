@@ -20,7 +20,7 @@ class Response(BaseModel):
   Attributes:
     message (Optional[str]): Un message descriptif concernant le résultat de la requête. Vide par défaut.
     code (Optional[int]): Le code de statut ou code d'erreur associé. Par défaut à 0.
-    content (Optional[Any]): Les données utiles renvoyées par l'opération. Par défaut à None.
+    content (Optional[Any]): Les données utiles renvoyées par l'opération. Aucun par défaut.
   """
   message: Optional[str] = ""
   code: Optional[int] = 0
