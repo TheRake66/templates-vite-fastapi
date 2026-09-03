@@ -20,8 +20,11 @@ from uvicorn import run
 
 # Lancement de l'application.
 svconf: Dict[str, Any] = configuration["server"]
-run(application, access_log=svconf["debug"],
-  host=svconf["address"], port=svconf["port"])
+run(application, 
+  host=svconf["address"], 
+  port=svconf["port"],
+  reload=svconf["reload"]
+  access_log=svconf["debug"])
 
 # Route racine de l'API REST.
 @apirest.get("/")
