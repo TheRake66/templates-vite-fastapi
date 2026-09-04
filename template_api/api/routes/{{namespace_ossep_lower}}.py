@@ -12,9 +12,9 @@ Licence               : {{licence_name}}
 Notes                 : 
 """
 
-from api.libraries.structure import Structure
-from api.libraries.response import Response
-from api.services.websocket import websocket
+from libraries.structure import Structure
+from libraries.response import Response
+from services.websocket import websocket
 from typing import Any, Optional
 from fastapi import APIRouter
 

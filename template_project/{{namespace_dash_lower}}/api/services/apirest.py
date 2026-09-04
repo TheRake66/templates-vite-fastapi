@@ -11,8 +11,8 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from api.services.configuration import configuration
-from api.libraries.autoload import import_all
+from services.configuration import configuration, Json
+from libraries.autoload import import_all
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Any, Optional, Dict
 from fastapi import FastAPI
@@ -21,7 +21,7 @@ from fastapi import FastAPI
 apirest: Optional[FastAPI] = None
 
 if not apirest:
-  arconf: Dict[str, Any] = configuration["apirest"]
+  arconf: Json = configuration["apirest"]
   
   # Définition du serveur.
   apirest: FastAPI = FastAPI(
@@ -38,5 +38,5 @@ if not apirest:
 
   # Chargement des routes.
   prefix: str = f"/api/{arconf["version"]}"
-  for router in import_all("api/routes", "router"):
+  for router in import_all("routes", "router"):
     apirest.include_router(router, prefix=prefix)

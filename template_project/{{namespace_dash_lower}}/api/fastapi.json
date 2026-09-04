@@ -21,7 +21,7 @@
   },
   "database": {
     "sqlite": true,
-    "dbpath": "api/{{lower_name}}.db",
+    "dbpath": "{{lower_name}}.db",
     "create": true,
     "memory": false,
     "debug": true,

@@ -11,20 +11,21 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from api.services.configuration import configuration
-from api.services.application import application
-from api.services.websocket import websocket
-from api.services.apirest import apirest
+from services.configuration import configuration, Json
+from services.application import application
+from services.websocket import websocket
+from services.apirest import apirest
 from typing import Any, Dict
 from uvicorn import run
 
 # Lancement de l'application.
-svconf: Dict[str, Any] = configuration["server"]
-run(application, 
-  host=svconf["address"], 
-  port=svconf["port"],
-  reload=svconf["reload"],
-  access_log=svconf["debug"])
+if __name__ == "__main__":
+  apconf: Json = configuration["server"]
+  run("main:application", 
+    host=apconf["address"], 
+    port=apconf["port"],
+    reload=apconf["reload"],
+    access_log=apconf["debug"])
 
 # Route racine de l'API REST.
 @apirest.get("/")
@@ -33,7 +34,7 @@ async def root() -> None:
 
 # Gestion de la connexion aux WebSockets.
 @websocket.event
-async def connect(sid: str, environ: Dict[str, Any]) -> None:
+async def connect(sid: str) -> None:
   pass
 
 # Gestion de la déconnexion aux WebSockets.

@@ -18,8 +18,8 @@ Notes                 :
     - name#receive : Envoie les données de la boucle de diffusion vers le WebSocket.
 """
 
-from api.services.websocket import websocket
-from api.libraries.response import Response
+from services.websocket import websocket
+from libraries.response import Response
 from asyncio import Task, CancelledError, sleep, create_task
 from typing import Callable, Optional
 from types import CoroutineType

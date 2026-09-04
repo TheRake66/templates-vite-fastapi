@@ -13,8 +13,8 @@ Notes                 :
   l'événement "name#broadcast".
 """
 
-from api.services.websocket import websocket
-from api.libraries.response import Response
+from services.websocket import websocket
+from libraries.response import Response
 from asyncio import sleep, create_task
 from typing import Callable, Optional
 

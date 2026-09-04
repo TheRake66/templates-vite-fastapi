@@ -11,9 +11,9 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from api.services.configuration import configuration
-from api.services.websocket import websocket
-from api.services.apirest import apirest
+from services.configuration import configuration, Json
+from services.websocket import websocket
+from services.apirest import apirest
 from typing import Any, Optional, Dict
 from socketio import ASGIApp
 
@@ -21,7 +21,7 @@ from socketio import ASGIApp
 application: Optional[ASGIApp] = None
 
 if not application:
-  wsconf: Dict[str, Any] = configuration["websocket"]
+  wsconf: Json = configuration["websocket"]
   
   # Définition du serveur.
   application: ASGIApp = ASGIApp(

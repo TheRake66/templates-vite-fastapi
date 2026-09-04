@@ -11,7 +11,7 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from api.services.configuration import configuration
+from services.configuration import configuration, Json
 from typing import Any, Optional, Dict
 from socketio import AsyncServer
 
@@ -19,7 +19,7 @@ from socketio import AsyncServer
 websocket: Optional[AsyncServer] = None
 
 if not websocket:
-  wsconf: Dict[str, Any] = configuration["websocket"]
+  wsconf: Json = configuration["websocket"]
   
   # Définition du serveur.
   websocket = AsyncServer(

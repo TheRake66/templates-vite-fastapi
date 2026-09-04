@@ -11,17 +11,17 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from api.services.configuration import configuration
-from api.libraries.autoload import import_all
-from api.libraries.ormbase import OrmBase
+from services.configuration import configuration, Json
+from libraries.autoload import import_all
+from libraries.ormbase import OrmBase
 from sqlalchemy import create_engine, Engine
 from typing import Any, Optional, Dict
 
-def __get_sqlite(dbconf: Dict[str, Any]) -> str:
+def __get_sqlite(dbconf: Json) -> str:
   """Retourne l'URL de connexion pour SQLite.
 
   Arguments:
-    dbconf (Dict[str, Any]): La configuration de la base de données.
+    dbconf (Json): La configuration de la base de données.
 
   Returns:
     str: L'URL de connexion.
@@ -29,16 +29,16 @@ def __get_sqlite(dbconf: Dict[str, Any]) -> str:
   return "sqlite:///:memory:" if dbconf["memory"] else \
         f"sqlite:///{dbconf["dbpath"]}"
 
-def __get_remote(dbconf: Dict[str, Any]) -> str:
+def __get_remote(dbconf: Json) -> str:
   """Retourne l'URL de connexion pour une base distante.
 
   Arguments:
-    dbconf (Dict[str, Any]): La configuration de la base de données.
+    dbconf (Json): La configuration de la base de données.
 
   Returns:
     str: L'URL de connexion.
   """
-  remote: Dict[str, Any] = dbconf["remote"]
+  remote: Json = dbconf["remote"]
   credential: str = f"{remote["username"]}:{remote["password"]}"
   connection: str = f"{remote["address"]}:{remote["port"]}"
   return f"{remote["driver"]}://{credential}@{connection}/{dbconf["dbpath"]}"
@@ -48,7 +48,7 @@ database: Optional[Engine] = None
 
 # Initialise la connexion premier import.
 if not database:
-  dbconf: Dict[str, Any] = configuration["database"]
+  dbconf: Json = configuration["database"]
   
   # Récupération de l'URL de connexion.
   url: str = \
@@ -60,5 +60,5 @@ if not database:
   
   # Création des tables.
   if dbconf["create"]:
-    import_all("api/bases")
+    import_all("bases")
     OrmBase.metadata.create_all(database)
