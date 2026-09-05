@@ -11,19 +11,27 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from services.configuration import configuration, Json
-from typing import Optional
+from libraries.configuration import configuration, Json
 from socketio import AsyncServer
 
-# Objet contenant le serveur de l'API REST.
-websocket: Optional[AsyncServer] = None
+def __init_asyncserver() -> AsyncServer:
+  """Initialise le service AsyncServer.
 
-if not websocket:
+  Returns:
+    AsyncServer: Le service AsyncServer.
+  """
+  # Chargement de la configuration.
   config: Json = configuration["websocket"]
   
   # Définition du serveur.
-  websocket = AsyncServer(
+  websocket: AsyncServer = AsyncServer(
     async_mode="asgi",
     cors_allowed_origins=config["origins"],
     engineio_logger=config["debug"],
     logger=config["debug"])
+  
+  # On retourne le service.
+  return websocket
+
+# Objet contenant le serveur de l'API REST.
+websocket: AsyncServer = __init_asyncserver()

@@ -11,16 +11,18 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from services.configuration import configuration, Json
+from libraries.configuration import configuration, Json
 from libraries.autoload import import_all
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
-from typing import Optional
 
-# Objet contenant le serveur de l'API REST.
-apirest: Optional[FastAPI] = None
+def __init_fastapi() -> FastAPI:
+  """Initialise le service FastAPI.
 
-if not apirest:
+  Returns:
+    FastAPI: Le service FastAPI.
+  """
+  # Chargement de la configuration.
   config: Json = configuration["apirest"]
   
   # Définition du serveur.
@@ -40,3 +42,9 @@ if not apirest:
   prefix: str = f"/api/{config["version"]}"
   for router in import_all("routes", "router"):
     apirest.include_router(router, prefix=prefix)
+  
+  # On retourne le service.
+  return apirest
+
+# Objet contenant le serveur de l'API REST.
+apirest: FastAPI = __init_fastapi()

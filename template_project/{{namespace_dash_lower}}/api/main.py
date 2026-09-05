@@ -11,7 +11,7 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from services.configuration import configuration, Json
+from libraries.configuration import configuration, Json
 from services.application import application
 from services.websocket import websocket
 from services.apirest import apirest

@@ -11,19 +11,55 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from services.configuration import configuration, Json
+from libraries.configuration import configuration, Json
 from libraries.autoload import import_all
 from libraries.ormbase import OrmBase
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy import create_engine, Engine
 from collections.abc import Iterator
-from typing import Optional
 
-# Objet contenant la connexion à la base de données.
-engine: Optional[Engine] = None
+def __init_engine() -> Engine:
+  """Initialise le service Engine.
 
-# Objet faisant le lien entre l'ORM et l'engine.
-session: Optional[Session] = None
+  Returns:
+    Engine: Le service Engine.
+  """
+  # Chargement de la configuration.
+  config: Json = configuration["database"]
+
+  # Récupération de l'URL de connexion.
+  url: str = \
+    __get_sqlite(config) if config["sqlite"] else \
+    __get_remote(config)
+  
+  # Connexion à la base de données.
+  engine = create_engine(url, echo=config["debug"])
+  
+  # Création des tables.
+  if config["create"]:
+    __create_all(engine)
+  
+  # On retourne le service.
+  return engine
+
+def __init_session() -> Session:
+  """Initialise le service Session.
+
+  Returns:
+    Session: Le service Session.
+  """
+  session: Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+  # Création de la session pour l'ORM.
+  return session
+
+def __create_all(engine: Engine) -> None:
+  """Importe toutes les tables et crée la base de données.
+
+  Arguments:
+    engine (Engine): Le moteur de la base de données.
+  """
+  import_all("bases")
+  OrmBase.metadata.create_all(engine)
 
 def __get_sqlite(config: Json) -> str:
   """Retourne l'URL de connexion pour SQLite.
@@ -61,20 +97,8 @@ def get_database() -> Iterator[Session]:
   try: yield database
   finally: database.close()
 
-# Initialise la connexion premier import.
-if not engine and not session:
-  config: Json = configuration["database"]
+# Objet contenant la connexion à la base de données.
+engine: Engine = __init_engine()
 
-  # Récupération de l'URL de connexion.
-  url: str = \
-    __get_sqlite(config) if config["sqlite"] else \
-    __get_remote(config)
-  
-  # Connexion à la base de données.
-  engine = create_engine(url, echo=config["debug"])
-  session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-  
-  # Création des tables.
-  if config["create"]:
-    import_all("bases")
-    OrmBase.metadata.create_all(engine)
+# Objet faisant le lien entre l'ORM et l'engine.
+session: Session = __init_session()

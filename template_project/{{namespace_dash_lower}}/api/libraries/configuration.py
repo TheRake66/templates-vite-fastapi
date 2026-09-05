@@ -11,16 +11,14 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from typing import Optional, Dict, List, Union
-import json
+from __future__ import annotations
+from typing import Dict, List, Union
+from json import load
 
 # Type d'un objet JSON.
-type Json = Dict[str, Union[str, int, float, bool, List, Dict, None]]
+type JsonValue = Union[str, int, float, bool, None]
+type Json = Union[JsonValue, List[Json], Dict[str, Json]]
 
 # Dictionnaire de la configuration de FastAPI.
-configuration: Optional[Json] = None
-
-# Charge la configuration premier import.
-if not configuration:
-  with open("fastapi.json") as buffer:
-    configuration = json.load(buffer)
+with open("fastapi.json") as buffer:
+  configuration: Json = load(buffer)
