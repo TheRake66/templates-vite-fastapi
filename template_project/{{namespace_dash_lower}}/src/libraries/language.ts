@@ -15,11 +15,11 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import resourcesToBackend from 'i18next-resources-to-backend';
-import configuration from '../react.json';
+import config from '../react.json';
 import type { LanguageType } from '../enums/language.type.ts';
 
-const defaultLang = configuration.default.language;
-const storageKey = configuration.storage.language;
+const defaultLang = config.default.language;
+const storageKey = config.storage.language;
 
 /**
  * Initialise le système d'internationalisation (i18n) avec

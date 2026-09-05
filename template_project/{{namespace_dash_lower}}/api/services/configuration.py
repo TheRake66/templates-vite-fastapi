@@ -11,7 +11,7 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from typing import Any, Optional, Dict, List, Union
+from typing import Optional, Dict, List, Union
 import json
 
 # Type d'un objet JSON.

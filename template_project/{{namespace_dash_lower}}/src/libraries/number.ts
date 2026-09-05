@@ -11,9 +11,9 @@
  * Notes                 : 
  */
 
-import configuration from '../react.json';
+import config from '../react.json';
 
-const defaultLang = configuration.default.language;
+const defaultLang = config.default.language;
 
 /**
  * Formate un nombre en chaîne de caractères selon la langue spécifiée

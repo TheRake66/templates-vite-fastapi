@@ -12,18 +12,18 @@ Notes                 :
 """
 
 from services.configuration import configuration, Json
-from typing import Any, Optional, Dict
+from typing import Optional
 from socketio import AsyncServer
 
 # Objet contenant le serveur de l'API REST.
 websocket: Optional[AsyncServer] = None
 
 if not websocket:
-  wsconf: Json = configuration["websocket"]
+  config: Json = configuration["websocket"]
   
   # Définition du serveur.
   websocket = AsyncServer(
     async_mode="asgi",
-    cors_allowed_origins=wsconf["origins"],
-    logger=wsconf["debug"],
-    engineio_logger=wsconf["debug"])
+    cors_allowed_origins=config["origins"],
+    engineio_logger=config["debug"],
+    logger=config["debug"])

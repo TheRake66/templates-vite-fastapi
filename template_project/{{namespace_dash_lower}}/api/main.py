@@ -15,17 +15,17 @@ from services.configuration import configuration, Json
 from services.application import application
 from services.websocket import websocket
 from services.apirest import apirest
-from typing import Any, Dict
+from libraries.unicast import UniCast
 from uvicorn import run
 
 # Lancement de l'application.
 if __name__ == "__main__":
-  apconf: Json = configuration["server"]
+  config: Json = configuration["server"]
   run("main:application", 
-    host=apconf["address"], 
-    port=apconf["port"],
-    reload=apconf["reload"],
-    access_log=apconf["debug"])
+    host=config["address"], 
+    port=config["port"],
+    reload=config["reload"],
+    access_log=config["debug"])
 
 # Route racine de l'API REST.
 @apirest.get("/")
@@ -40,4 +40,4 @@ async def connect(sid: str) -> None:
 # Gestion de la déconnexion aux WebSockets.
 @websocket.event
 async def disconnect(sid: str) -> None:
-  pass
+  UniCast.cleanup_sid(sid)

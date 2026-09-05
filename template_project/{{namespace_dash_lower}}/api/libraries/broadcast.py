@@ -13,13 +13,13 @@ Notes                 :
   l'événement "name#broadcast".
 """
 
-from services.websocket import websocket
 from libraries.response import Response
+from typing import Callable, Optional, Awaitable
+from services.websocket import websocket
 from asyncio import sleep, create_task
-from typing import Callable, Optional
 
 # Type des fonctions à exécuter.
-type BroadTask = Callable[[], Response]
+type BroadTask = Callable[[], Awaitable[Response]]
 
 class BroadCast():
   """Gère une boucle de diffusion pour tous les WebSockets."""

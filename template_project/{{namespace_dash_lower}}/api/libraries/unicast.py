@@ -16,20 +16,28 @@ Notes                 :
     - name#follow : Enregistre le WebSocket dans la boucle de diffusion.
     - name#unfollow : Retire le WebSocket dans la boucle de diffusion.
     - name#receive : Envoie les données de la boucle de diffusion vers le WebSocket.
+  
+  Contrairement à Socket.IO qui retire automatiquement un WebSocket qui se déconnecte de
+  toutes les rooms dont il fait partie, il faut le retirer manuellement lors de 
+  l'événement "disconnect" en appelant "cleanup_sid".
 """
 
+from __future__ import annotations
 from services.websocket import websocket
 from libraries.response import Response
 from asyncio import Task, CancelledError, sleep, create_task
-from typing import Callable, Optional
+from typing import Callable, Optional, Awaitable, List
 from types import CoroutineType
 
 # Type des fonctions à exécuter.
-type UniTask = Callable[[str], Response]
+type UniTask = Callable[[str], Awaitable[Response]]
 
 class UniCast():
   """Gère une boucle de diffusion pour un groupe de WebSocket avec des données personnalisées 
   pour chaque WebSocket."""
+
+  # Liste de toutes les listes de diffusion.
+  __actives: List[UniCast] = []
   
   def __init__(self, name: str, callback: UniTask, interval: Optional[float] = 1.0) -> None:
     """Constructeur de la classe.
@@ -46,6 +54,7 @@ class UniCast():
     self.__interval: float = interval
     self.__tasks: dict[str, Task] = {}
     self.__register_events()
+    UniCast.__actives.append(self)
   
   def __delete_sid(self, sid: str) -> None:
     """Supprime un WebSocket de la boucle de diffusion.
@@ -89,7 +98,9 @@ class UniCast():
     @websocket.on(self.__stop_name)
     async def stop(sid: str) -> None: 
       self.__delete_sid(sid)
-      
-    @websocket.on("disconnect")
-    async def disconnect(sid: str) -> None: 
-      self.__delete_sid(sid)
+  
+  @classmethod
+  def cleanup_sid(cls, sid: str) -> None:
+    """Retire un WebSocket de toutes les listes de diffusion lors de sa déconnexion."""
+    for unicast in cls.__actives:
+      unicast.__delete_sid(sid)

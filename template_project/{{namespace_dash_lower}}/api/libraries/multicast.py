@@ -19,11 +19,11 @@ Notes                 :
 from services.websocket import websocket
 from libraries.response import Response
 from asyncio import Task, CancelledError, sleep, create_task
-from typing import Callable, Optional
+from typing import Callable, Optional, Awaitable
 from types import CoroutineType
 
 # Type des fonctions à exécuter.
-type MultiTask = Callable[[], Response]
+type MultiTask = Callable[[], Awaitable[Response]]
 
 class MultiCast():
   """Gère une boucle de diffusion pour un groupe de WebSocket."""

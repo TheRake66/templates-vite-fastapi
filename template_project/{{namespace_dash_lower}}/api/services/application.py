@@ -14,17 +14,17 @@ Notes                 :
 from services.configuration import configuration, Json
 from services.websocket import websocket
 from services.apirest import apirest
-from typing import Any, Optional, Dict
 from socketio import ASGIApp
+from typing import Optional
 
 # Objet contenant le serveur de l'application.
 application: Optional[ASGIApp] = None
 
 if not application:
-  wsconf: Json = configuration["websocket"]
+  config: Json = configuration["websocket"]
   
   # Définition du serveur.
   application: ASGIApp = ASGIApp(
     socketio_server=websocket,
     other_asgi_app=apirest,
-    socketio_path=wsconf["urlpath"])
+    socketio_path=config["urlpath"])

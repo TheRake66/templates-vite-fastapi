@@ -13,7 +13,7 @@
 
 import axios from 'axios';
 import { io, Socket } from 'socket.io-client';
-import configuration from '../react.json';
+import config from '../react.json';
 
 interface BackConfig {
   address: string;
@@ -24,7 +24,7 @@ interface BackConfig {
   timeout: number;
 }
 
-const backend: BackConfig = configuration.backend;
+const backend: BackConfig = config.backend;
 const protocol: string = backend.ssl ? 'https' : 'http';
 
 /**

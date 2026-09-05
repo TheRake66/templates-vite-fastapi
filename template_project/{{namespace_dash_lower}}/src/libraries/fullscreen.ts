@@ -11,10 +11,10 @@
  * Notes                 : 
  */
 
-import configuration from '../react.json';
+import config from '../react.json';
 
-const defaultState = configuration.default.fullscreen;
-const storageKey = configuration.storage.fullscreen;
+const defaultState = config.default.fullscreen;
+const storageKey = config.storage.fullscreen;
 
 /**
  * Initialise l'état du mode plein écran au chargement de l'application
