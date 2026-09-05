@@ -33,7 +33,7 @@ def __init_engine() -> Engine:
     __get_remote(config)
   
   # Connexion à la base de données.
-  engine = create_engine(url, echo=config["debug"])
+  engine: Engine = create_engine(url, echo=config["debug"])
   
   # Création des tables.
   if config["create"]:
@@ -48,8 +48,10 @@ def __init_session() -> Session:
   Returns:
     Session: Le service Session.
   """
-  session: Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
   # Création de la session pour l'ORM.
+  session: Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+  
+  # On retourne le service.
   return session
 
 def __create_all(engine: Engine) -> None:
