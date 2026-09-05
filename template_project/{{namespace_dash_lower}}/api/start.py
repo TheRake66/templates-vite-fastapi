@@ -8,8 +8,6 @@ MAIN_PY: str = "main.py"
 
 chdir(dirname(__file__))
 
-print(dirname(__file__))
-
 if not exists(VENV_DIR) or \
    not exists(MAIN_PY): exit(1)
 
