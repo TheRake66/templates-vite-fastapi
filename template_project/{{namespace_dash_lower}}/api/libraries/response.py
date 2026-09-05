@@ -12,16 +12,16 @@ Notes                 :
 """
 
 from pydantic import BaseModel
-from typing import Any, Optional
+from typing import Any
 
 class Response(BaseModel):
   """Représente la structure standard d'une réponse API.
 
   Attributes:
-    message (Optional[str]): Un message descriptif concernant le résultat de la requête. Vide par défaut.
-    code (Optional[int]): Le code de statut ou code d'erreur associé. Par défaut à 0.
-    content (Optional[Any]): Les données utiles renvoyées par l'opération. Aucun par défaut.
+    message (str): Un message descriptif concernant le résultat de la requête. Vide par défaut.
+    code (int): Le code de statut ou code d'erreur associé. Par défaut à 0.
+    content (Any): Les données utiles renvoyées par l'opération. Aucun par défaut.
   """
-  message: Optional[str] = ""
-  code: Optional[int] = 0
-  content: Optional[Any] = None
+  message: str = ""
+  code: int = 0
+  content: Any = None

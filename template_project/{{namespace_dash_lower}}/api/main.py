@@ -11,10 +11,14 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from libraries.configuration import configuration, Json
+from services.websocket import websocket, count, \
+  user_connected, user_disconnected
 from services.application import application
-from services.websocket import websocket
 from services.apirest import apirest
+from libraries.configuration import configuration, Json
+from libraries.response import Response
+from libraries.broadcast import BroadCast
+from libraries.multicast import MultiCast
 from libraries.unicast import UniCast
 from uvicorn import run
 
@@ -30,14 +34,20 @@ if __name__ == "__main__":
 # Route racine de l'API REST.
 @apirest.get("/")
 async def root() -> None:
-  pass
+  return Response(message="Hello World!")
 
 # Gestion de la connexion aux WebSockets.
 @websocket.event
 async def connect(sid: str) -> None:
-  pass
+  user_connected(sid)
+  if count == 1:
+    BroadCast.start_all()
 
 # Gestion de la déconnexion aux WebSockets.
 @websocket.event
 async def disconnect(sid: str) -> None:
+  user_disconnected(sid)
   UniCast.cleanup_sid(sid)
+  MultiCast.cleanup_sid(sid)
+  if count == 0:
+    BroadCast.stop_all()

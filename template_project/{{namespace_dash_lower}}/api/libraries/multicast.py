@@ -14,12 +14,15 @@ Notes                 :
     - name#follow : Enregistre le WebSocket dans la boucle de diffusion.
     - name#unfollow : Retire le WebSocket dans la boucle de diffusion.
     - name#receive : Envoie les données de la boucle de diffusion vers le WebSocket.
+
+  En cas de crash, l'événement "unfollow" ne survient pas, il faut donc retirer
+  manuellement le WebSocket lors de l'événement "disconnect" en appelant "cleanup_sid".
 """
 
 from services.websocket import websocket
 from libraries.response import Response
 from asyncio import Task, CancelledError, sleep, create_task
-from typing import Callable, Optional, Awaitable
+from typing import Callable, Optional, Awaitable, List
 from types import CoroutineType
 
 # Type des fonctions à exécuter.
@@ -27,14 +30,17 @@ type MultiTask = Callable[[], Awaitable[Response]]
 
 class MultiCast():
   """Gère une boucle de diffusion pour un groupe de WebSocket."""
+
+  # Liste de toutes les listes de diffusion.
+  __actives: List[MultiCast] = []
   
-  def __init__(self, name: str, callback: MultiTask, interval: Optional[float] = 1.0) -> None:
+  def __init__(self, name: str, callback: MultiTask, interval: float = 1.0) -> None:
     """Constructeur de la classe.
 
     Arguments:
       name (str): Nom de la boucle de diffusion.
       callback (MultiTask): Fonction retournant les données à diffuser.
-      interval (Optional[float]): Nombre de secondes entre chaque diffusion. Par défaut à 1.0.
+      interval (float): Nombre de secondes entre chaque diffusion. Par défaut à 1.0.
     """
     self.__room: str = name
     self.__follow: str = f"{name}#follow"
@@ -45,6 +51,7 @@ class MultiCast():
     self.__task: Optional[Task] = None
     self.__count: int = 0
     self.__register_events()
+    MultiCast.__actives.append(self)
   
   def __enter_room(self, sid: str) -> None:
     """Ajoute un WebSocket à la boucle de diffusion.
@@ -87,3 +94,9 @@ class MultiCast():
     @websocket.on(self.__unfollow)
     async def leave(sid: str): 
       self.__leave_room(sid)
+
+  @classmethod
+  def cleanup_sid(cls, sid: str) -> None:
+    """Retire un WebSocket de toutes les listes de diffusion lors d'un crash."""
+    for unicast in cls.__actives:
+      unicast.__leave_room(sid)

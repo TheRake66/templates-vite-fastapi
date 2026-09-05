@@ -17,16 +17,15 @@ Notes                 :
     - name#unfollow : Retire le WebSocket dans la boucle de diffusion.
     - name#receive : Envoie les données de la boucle de diffusion vers le WebSocket.
   
-  Contrairement à Socket.IO qui retire automatiquement un WebSocket qui se déconnecte de
-  toutes les rooms dont il fait partie, il faut le retirer manuellement lors de 
-  l'événement "disconnect" en appelant "cleanup_sid".
+  En cas de crash, l'événement "unfollow" ne survient pas, il faut donc retirer
+  manuellement le WebSocket lors de l'événement "disconnect" en appelant "cleanup_sid".
 """
 
 from __future__ import annotations
 from services.websocket import websocket
 from libraries.response import Response
 from asyncio import Task, CancelledError, sleep, create_task
-from typing import Callable, Optional, Awaitable, List
+from typing import Callable, Awaitable, List
 from types import CoroutineType
 
 # Type des fonctions à exécuter.
@@ -39,13 +38,13 @@ class UniCast():
   # Liste de toutes les listes de diffusion.
   __actives: List[UniCast] = []
   
-  def __init__(self, name: str, callback: UniTask, interval: Optional[float] = 1.0) -> None:
+  def __init__(self, name: str, callback: UniTask, interval: float = 1.0) -> None:
     """Constructeur de la classe.
 
     Arguments:
       name (str): Nom de la boucle de diffusion.
       callback (UniTask): Fonction retournant les données à diffuser.
-      interval (Optional[float]): Nombre de secondes entre chaque diffusion. Par défaut à 1.0.
+      interval (float): Nombre de secondes entre chaque diffusion. Par défaut à 1.0.
     """
     self.__start_name: str = f"{name}#follow"
     self.__stop_name: str = f"{name}#unfollow"
@@ -101,6 +100,6 @@ class UniCast():
   
   @classmethod
   def cleanup_sid(cls, sid: str) -> None:
-    """Retire un WebSocket de toutes les listes de diffusion lors de sa déconnexion."""
+    """Retire un WebSocket de toutes les listes de diffusion lors d'un crash."""
     for unicast in cls.__actives:
       unicast.__delete_sid(sid)

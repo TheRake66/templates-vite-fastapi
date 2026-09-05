@@ -30,7 +30,9 @@ def import_all(package: str, varname: Optional[str] = None) -> List[Any]:
   for file in Path(package).rglob("*.py"):
     module: str = ".".join(file.with_suffix("").parts)
     loaded: ModuleType = import_module(module)
-    if varname: values += [getattr(loaded, varname)]
+    if varname: 
+      value: Any = getattr(loaded, varname)
+      values.append(value)
   return values
 
 
