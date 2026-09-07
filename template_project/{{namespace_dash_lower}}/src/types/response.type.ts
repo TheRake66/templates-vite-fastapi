@@ -12,19 +12,9 @@
  */
 
 /**
- * Définition du type JsonValue.
- */
-export type JsonValue = string | number | boolean | null;
-
-/**
- * Définition du type Json.
- */
-export type Json = JsonValue | Json[] | { [key: string]: Json };
-
-/**
  * Définition du type Response.
  */
-export interface Response<T = Json> {
+export interface Response<T = unknown> {
   message: string;
   code: number;
   content: T;
