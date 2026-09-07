@@ -11,8 +11,8 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
+from libraries.configuration import Json
 from pydantic import BaseModel
-from typing import Any
 
 class Response(BaseModel):
   """Représente la structure standard d'une réponse API.
@@ -20,8 +20,8 @@ class Response(BaseModel):
   Attributes:
     message (str): Un message descriptif concernant le résultat de la requête. Vide par défaut.
     code (int): Le code de statut ou code d'erreur associé. Par défaut à 0.
-    content (Any): Les données utiles renvoyées par l'opération. Aucun par défaut.
+    content (Json): Les données utiles renvoyées par l'opération. Aucun par défaut.
   """
   message: str = ""
   code: int = 0
-  content: Any = None
+  content: Json = None

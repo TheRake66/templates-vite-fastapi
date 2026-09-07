@@ -12,8 +12,9 @@ Notes                 :
 """
 
 from libraries.configuration import configuration, Json
+from libraries.response import Response
 from socketio import AsyncServer
-from typing import List
+from typing import Optional
 
 def __init_asyncserver() -> AsyncServer:
   """Initialise le service AsyncServer.
@@ -34,33 +35,40 @@ def __init_asyncserver() -> AsyncServer:
   # On retourne le service.
   return websocket
 
-def user_connected(sid: str) -> None:
+def user_connected() -> None:
   """Ajoute un utilisateur à la liste pour le compteurs.
 
-  Arguments:
-    sid (str): L'identifiant du socket.
+  Returns:
+    int: Le nombre d'utilisateurs connectés.
   """
-  global users, count
-  if not sid in users:
-    users.append(sid)
-    count += 1
+  global __count
+  __count += 1
+  return __count
 
-def user_disconnected(sid: str) -> None:
+def user_disconnected() -> None:
   """Retire un utilisateur de la liste pour le compteurs.
 
-  Arguments:
-    sid (str): L'identifiant du socket.
+  Returns:
+    int: Le nombre d'utilisateurs connectés.
   """
-  global users, count
-  if sid in users:
-    users.remove(sid)
-    count -= 1
+  global __count
+  __count -= 1
+  return __count
 
-# Liste des utilisateurs connectés.
-users: List[str] = []
+async def emit_data(event: str, data: Response, 
+  room: Optional[str] = None, sid: Optional[str] = None) -> None:
+  """Envoi des données depuis le serveur.
+
+  Arguments:
+    event (str): Le nom de l'événement.
+    data (Response): Les données à envoyer.
+    room (Optional[str]): Le nom du salon dans lequel envoyer les données. Aucun par défaut.
+    sid (Optional[str]): L'identifiant du WebSocket à qui envoyer les données. Aucun par défaut.
+  """
+  await websocket.emit(event, data.model_dump(), room=room, to=sid)
 
 # Nombre d'utilisateurs connectés.
-count: int = 0
+__count: int = 0
 
 # Objet contenant le serveur de l'API REST.
 websocket: AsyncServer = __init_asyncserver()

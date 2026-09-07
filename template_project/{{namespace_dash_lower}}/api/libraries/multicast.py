@@ -19,7 +19,7 @@ Notes                 :
   manuellement le WebSocket lors de l'événement "disconnect" en appelant "cleanup_sid".
 """
 
-from services.websocket import websocket
+from services.websocket import websocket, emit_data
 from libraries.response import Response
 from asyncio import Task, CancelledError, sleep, create_task
 from typing import Callable, Optional, Awaitable, List
@@ -62,7 +62,7 @@ class MultiCast():
     websocket.enter_room(sid, self.__room)
     self.__count += 1
     if self.__count == 1:
-      routine: CoroutineType = self.__stream_room()
+      routine: CoroutineType = self.__stream_loop()
       self.__task = create_task(routine)
       
   def __leave_room(self, sid: str) -> None:
@@ -76,12 +76,12 @@ class MultiCast():
     if self.__count == 0:
       self.__task.cancel()
 
-  async def __stream_room(self) -> None:
+  async def __stream_loop(self) -> None:
     """Tâche d'exécution pour les WebSockets."""
     try:
       while True:
         data: Response = await self.__callback()
-        await websocket.emit(self.__receive, data, room=self.__room)
+        await emit_data(self.__receive, data, self.__room)
         await sleep(self.__interval)
     except CancelledError: pass
   

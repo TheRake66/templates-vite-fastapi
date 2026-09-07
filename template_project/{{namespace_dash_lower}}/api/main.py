@@ -11,7 +11,7 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from services.websocket import websocket, count, \
+from services.websocket import websocket, \
   user_connected, user_disconnected
 from services.application import application
 from services.apirest import apirest
@@ -20,6 +20,7 @@ from libraries.response import Response
 from libraries.broadcast import BroadCast
 from libraries.multicast import MultiCast
 from libraries.unicast import UniCast
+from typing import Dict, Any
 from uvicorn import run
 
 # Lancement de l'application.
@@ -38,16 +39,14 @@ async def root() -> None:
 
 # Gestion de la connexion aux WebSockets.
 @websocket.event
-async def connect(sid: str) -> None:
-  user_connected(sid)
-  if count == 1:
+async def connect(sid: str, environ: Dict[str, Any]) -> None:
+  if user_connected() == 1:
     BroadCast.start_all()
 
 # Gestion de la déconnexion aux WebSockets.
 @websocket.event
 async def disconnect(sid: str) -> None:
-  user_disconnected(sid)
   UniCast.cleanup_sid(sid)
   MultiCast.cleanup_sid(sid)
-  if count == 0:
+  if user_disconnected() == 0:
     BroadCast.stop_all()

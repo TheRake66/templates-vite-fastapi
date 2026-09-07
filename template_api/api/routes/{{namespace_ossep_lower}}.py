@@ -12,9 +12,9 @@ Licence               : {{licence_name}}
 Notes                 : 
 """
 
+from services.websocket import websocket, emit_data
 from libraries.structure import Structure
 from libraries.response import Response
-from services.websocket import websocket
 from typing import Any, Optional
 from fastapi import APIRouter
 
@@ -35,5 +35,5 @@ async def hello_apirest() -> Response:
 @websocket.on(f"{NAMESPACE}:hello")
 async def hello_websocket() -> None:
   """Fonction qui dit bonjour pour le WebSocket."""
-  await websocket.emit(f"{NAMESPACE}:hello", \
+  await emit_data(f"{NAMESPACE}:hello", \
     Response(message="Bonjour depuis le WebSocket {{title_name}}."))

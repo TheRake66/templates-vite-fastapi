@@ -18,7 +18,7 @@ Notes                 :
 """
 
 from libraries.response import Response
-from services.websocket import websocket
+from services.websocket import emit_data
 from asyncio import Task, CancelledError, sleep, create_task
 from typing import Callable, Awaitable, List, Optional
 from types import CoroutineType
@@ -60,7 +60,7 @@ class BroadCast():
     try:
       while True:
         data: Response = await self.__callback()
-        await websocket.emit(self.__event, data, broadcast=True)
+        await emit_data(self.__event, data)
         await sleep(self.__interval)
     except CancelledError: pass
   

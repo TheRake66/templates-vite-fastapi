@@ -22,7 +22,7 @@ Notes                 :
 """
 
 from __future__ import annotations
-from services.websocket import websocket
+from services.websocket import websocket, emit_data
 from libraries.response import Response
 from asyncio import Task, CancelledError, sleep, create_task
 from typing import Callable, Awaitable, List
@@ -46,9 +46,9 @@ class UniCast():
       callback (UniTask): Fonction retournant les données à diffuser.
       interval (float): Nombre de secondes entre chaque diffusion. Par défaut à 1.0.
     """
-    self.__start_name: str = f"{name}#follow"
-    self.__stop_name: str = f"{name}#unfollow"
-    self.__data_name: str = f"{name}#receive"
+    self.__follow: str = f"{name}#follow"
+    self.__unfollow: str = f"{name}#unfollow"
+    self.__receive: str = f"{name}#receive"
     self.__callback: UniTask = callback
     self.__interval: float = interval
     self.__tasks: dict[str, Task] = {}
@@ -72,10 +72,10 @@ class UniCast():
       sid (str): ID du WebSocket à ajouter.
     """
     if sid not in self.__tasks:
-      routine: CoroutineType = self.__stream_sid(sid)
+      routine: CoroutineType = self.__stream_loop(sid)
       self.__tasks[sid] = create_task(routine)
 
-  async def __stream_sid(self, sid: str) -> None:
+  async def __stream_loop(self, sid: str) -> None:
     """Tâche d'exécution pour un WebSocket unique.
 
     Arguments:
@@ -84,17 +84,17 @@ class UniCast():
     try:
       while True:
         data: Response = await self.__callback(sid)
-        await websocket.emit(self.__data_name, data, to=sid)
+        await emit_data(self.__receive, data, sid=sid)
         await sleep(self.__interval)
     except CancelledError: pass
 
   def __register_events(self):
     """Enregistre les différents événements."""
-    @websocket.on(self.__start_name)
+    @websocket.on(self.__follow)
     async def start(sid: str) -> None: 
       self.__create_sid(sid)
       
-    @websocket.on(self.__stop_name)
+    @websocket.on(self.__unfollow)
     async def stop(sid: str) -> None: 
       self.__delete_sid(sid)
   
