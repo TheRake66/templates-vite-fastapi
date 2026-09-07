@@ -9,28 +9,19 @@ Version               : 1.0.0
 Licence               : GPL-3.0
 
 Notes                 : 
+  L'import inutilisé "application" est nécessaire, c'est cette variable
+  que Uvicorn utilise pour lancer le serveur.
 """
 
+from services.application import application
 from services.websocket import websocket, \
   user_connected, user_disconnected
-from services.application import application
 from services.apirest import apirest
-from libraries.configuration import configuration, Json
 from libraries.response import Response
 from libraries.broadcast import BroadCast
 from libraries.multicast import MultiCast
 from libraries.unicast import UniCast
 from typing import Dict, Any
-from uvicorn import run
-
-# Lancement de l'application.
-if __name__ == "__main__":
-  config: Json = configuration["server"]
-  run("main:application", 
-    host=config["address"], 
-    port=config["port"],
-    reload=config["reload"],
-    access_log=config["debug"])
 
 # Route racine de l'API REST.
 @apirest.get("/")

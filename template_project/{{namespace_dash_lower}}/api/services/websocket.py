@@ -36,7 +36,7 @@ def __init_asyncserver() -> AsyncServer:
   return websocket
 
 def user_connected() -> int:
-  """Ajoute un utilisateur à la liste pour le compteurs.
+  """Incrémente le compteur du nombre d'utilisateurs.
 
   Returns:
     int: Le nombre d'utilisateurs connectés.
@@ -46,7 +46,7 @@ def user_connected() -> int:
   return __count
 
 def user_disconnected() -> int:
-  """Retire un utilisateur de la liste pour le compteurs.
+  """Décrémente le compteur du nombre d'utilisateurs.
 
   Returns:
     int: Le nombre d'utilisateurs connectés.
