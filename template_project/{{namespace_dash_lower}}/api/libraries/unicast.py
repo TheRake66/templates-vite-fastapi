@@ -75,27 +75,30 @@ class UniCast():
       routine: CoroutineType = self.__stream_loop(sid)
       self.__tasks[sid] = create_task(routine)
 
-  async def __stream_loop(self, sid: str) -> None:
+  async def __stream_loop(self, sid: str) -> CoroutineType:
     """Tâche d'exécution pour un WebSocket unique.
 
     Arguments:
       sid (str): ID du WebSocket pour la tâche.
+
+    Returns:
+      CoroutineType: Coroutine asynchrone.
     """
     try:
       while True:
         data: Response = await self.__callback(sid)
-        await emit_data(self.__receive, data, sid=sid)
+        await emit_data(self.__receive, data, sid)
         await sleep(self.__interval)
     except CancelledError: pass
 
   def __register_events(self):
     """Enregistre les différents événements."""
     @websocket.on(self.__follow)
-    async def start(sid: str) -> None: 
+    async def follow(sid: str) -> None: 
       self.__create_sid(sid)
       
     @websocket.on(self.__unfollow)
-    async def stop(sid: str) -> None: 
+    async def unfollow(sid: str) -> None: 
       self.__delete_sid(sid)
   
   @classmethod

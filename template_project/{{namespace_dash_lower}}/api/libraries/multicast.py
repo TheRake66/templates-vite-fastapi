@@ -42,13 +42,13 @@ class MultiCast():
       callback (MultiTask): Fonction retournant les données à diffuser.
       interval (float): Nombre de secondes entre chaque diffusion. Par défaut à 1.0.
     """
-    self.__room: str = name
     self.__follow: str = f"{name}#follow"
     self.__unfollow: str = f"{name}#unfollow"
     self.__receive: str = f"{name}#receive"
     self.__callback: MultiTask = callback
     self.__interval: float = interval
     self.__task: Optional[Task] = None
+    self.__sids: List[str] = []
     self.__count: int = 0
     self.__register_events()
     MultiCast.__actives.append(self)
@@ -59,11 +59,12 @@ class MultiCast():
     Arguments:
       sid (str): ID du WebSocket à ajouter.
     """
-    websocket.enter_room(sid, self.__room)
-    self.__count += 1
-    if self.__count == 1:
-      routine: CoroutineType = self.__stream_loop()
-      self.__task = create_task(routine)
+    if not sid in self.__sids:
+      self.__sids.append(sid)
+      self.__count += 1
+      if self.__count == 1:
+        routine: CoroutineType = self.__stream_loop()
+        self.__task = create_task(routine)
       
   def __leave_room(self, sid: str) -> None:
     """Supprime un WebSocket de la boucle de diffusion.
@@ -71,28 +72,34 @@ class MultiCast():
     Arguments:
       sid (str): ID du WebSocket à supprimer.
     """
-    websocket.leave_room(sid, self.__room)
-    self.__count -= 1
-    if self.__count == 0:
-      self.__task.cancel()
+    if sid in self.__sids:
+      self.__sids.remove(sid)
+      self.__count -= 1
+      if self.__count == 0:
+        self.__task.cancel()
 
-  async def __stream_loop(self) -> None:
-    """Tâche d'exécution pour les WebSockets."""
-    try:
+  async def __stream_loop(self) -> CoroutineType:
+    """Tâche d'exécution pour les WebSockets.
+
+    Returns:
+      CoroutineType: Coroutine asynchrone.
+    """
+    try: 
       while True:
         data: Response = await self.__callback()
-        await emit_data(self.__receive, data, self.__room)
+        for sid in self.__sids:
+          await emit_data(self.__receive, data, sid)
         await sleep(self.__interval)
     except CancelledError: pass
   
   def __register_events(self):
     """Enregistre les différents événements."""
     @websocket.on(self.__follow)
-    async def start(sid: str) -> None: 
+    def follow(sid: str) -> None:
       self.__enter_room(sid)
       
     @websocket.on(self.__unfollow)
-    async def leave(sid: str): 
+    def unfollow(sid: str) -> None:
       self.__leave_room(sid)
 
   @classmethod

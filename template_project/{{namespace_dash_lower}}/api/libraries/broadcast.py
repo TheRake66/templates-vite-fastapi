@@ -55,8 +55,12 @@ class BroadCast():
     """Arrête la tâche pour la boucle."""
     self.__task.cancel()
 
-  async def __stream_loop(self) -> None:
-    """Tâche d'exécution pour les WebSockets."""
+  async def __stream_loop(self) -> CoroutineType:
+    """Tâche d'exécution pour les WebSockets.
+
+    Returns:
+      CoroutineType: Coroutine asynchrone.
+    """
     try:
       while True:
         data: Response = await self.__callback()

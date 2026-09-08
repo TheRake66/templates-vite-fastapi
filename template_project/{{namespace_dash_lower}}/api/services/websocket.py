@@ -14,6 +14,7 @@ Notes                 :
 from libraries.configuration import configuration, Json
 from libraries.response import Response
 from socketio import AsyncServer
+from types import CoroutineType
 from typing import Optional
 
 def __init_asyncserver() -> AsyncServer:
@@ -55,17 +56,18 @@ def user_disconnected() -> int:
   __count -= 1
   return __count
 
-async def emit_data(event: str, data: Response, 
-  room: Optional[str] = None, sid: Optional[str] = None) -> None:
+async def emit_data(event: str, data: Response, sid: Optional[str] = None) -> CoroutineType:
   """Envoi des données depuis le serveur.
 
   Arguments:
     event (str): Le nom de l'événement.
     data (Response): Les données à envoyer.
-    room (Optional[str]): Le nom du salon dans lequel envoyer les données. Aucun par défaut.
-    sid (Optional[str]): L'identifiant du WebSocket à qui envoyer les données. Aucun par défaut.
+    sid (Optional[str]): L'identifiant du WebSocket cible. Aucun par défaut.
+
+  Returns:
+    CoroutineType: Coroutine asynchrone.
   """
-  await websocket.emit(event, data.model_dump(), room=room, to=sid)
+  await websocket.emit(event, data.model_dump(), to=sid)
 
 # Nombre d'utilisateurs connectés.
 __count: int = 0
