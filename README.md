@@ -2,10 +2,10 @@
   <img src="./banner.png" alt="Banner" width=100%>
 </div>
 
-# Template Web Application
+# Template Web App
 
 This is a set of templates for creating web applications with:
-  * [React](https://react.dev/) (with `TypeScript` and `SCSS`): Library used for building components.
+  * [React](https://react.dev/) (with [TypeScript](https://www.typescriptlang.org/) and [SCSS](https://sass-lang.com/)): Library used for building components.
   * [FastAPI](https://fastapi.tiangolo.com/): Framework for building API REST.
   * [Socket.IO](https://socket.io): Event-driven library for real-time communication.
   * [SQLAlchemy](https://www.sqlalchemy.org/): SQL toolkit and Object Relational Mapper.
@@ -41,7 +41,7 @@ You have three classes for managing broadcast lists with regular data delivery o
 
 `Unicast` is intended for specific use cases. It consumes more resources than `Multicast`, as each user has their own coroutine.
 
-### Example using `UniCast`:
+### Example using UniCast:
 
 ```py
 # api/routes/hello.py
@@ -63,13 +63,13 @@ useEffect(() => {
   socket.emit('hello#follow');
   socket.on('hello#receive', data => console.log(data.message));
   return () => {
-    socket.emit('hello#follow');
+    socket.emit('hello#unfollow');
     socket.off('hello#receive');
   };
 }, []);
 ```
 
-### Example using `MultiCast`:
+### Example using MultiCast:
 
 ```py
 # api/routes/hello.py
@@ -91,13 +91,13 @@ useEffect(() => {
   socket.emit('hello#follow');
   socket.on('hello#receive', data => console.log(data.message));
   return () => {
-    socket.emit('hello#follow');
+    socket.emit('hello#unfollow');
     socket.off('hello#receive');
   };
 }, []);
 ```
 
-### Example using `BroadCast`:
+### Example using BroadCast:
 
 ```py
 # api/routes/hello.py
