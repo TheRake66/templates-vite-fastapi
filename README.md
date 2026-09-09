@@ -41,7 +41,7 @@ You have three classes for managing broadcast lists with regular data delivery o
 
 `Unicast` is intended for specific use cases. It consumes more resources than `Multicast`, as each user has their own coroutine.
 
-### Example using UniCast:
+### Example using UniCast
 
 ```py
 # api/routes/hello.py
@@ -69,7 +69,7 @@ useEffect(() => {
 }, []);
 ```
 
-### Example using MultiCast:
+### Example using MultiCast
 
 ```py
 # api/routes/hello.py
@@ -97,7 +97,7 @@ useEffect(() => {
 }, []);
 ```
 
-### Example using BroadCast:
+### Example using BroadCast
 
 ```py
 # api/routes/hello.py
