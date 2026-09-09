@@ -105,7 +105,7 @@ from libraries.response import Response
 from libraries.broadcast import BroadCast
 
 async def say_hello() -> Response:
-  return Response(message=f"Hello to all users!")
+  return Response(message="Hello to all users!")
 
 # All users will receive a message every 3 seconds.
 BroadCast("hello", say_hello, 3)
