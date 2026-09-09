@@ -1,5 +1,5 @@
 {
-  "name": "{{lower_name}}",
+  "name": "{{namespace_dash_lower}}",
   "private": true,
   "version": "1.0.0",
   "type": "module",

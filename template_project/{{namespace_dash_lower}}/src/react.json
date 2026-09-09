@@ -1,6 +1,6 @@
 {
   "assembly": {
-    "name": "{{title_name}}",
+    "name": "{{namespace_dash_lower}}",
     "version": "1.0.0",
     "author": "{{creator_name}}",
     "github": "https://github.com/{{creator_name}}/{{lower_name}}"

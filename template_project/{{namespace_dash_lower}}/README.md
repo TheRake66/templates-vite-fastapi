@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./banner.jpg" alt="{{title_name}}" width=100%>
+  <img src="./banner.jpg" alt="{{namespace_dash_lower}}" width=100%>
 </div>
 
-# {{title_name}}
+# {{namespace_dash_lower}}
