@@ -53,7 +53,7 @@ class MultiCast():
     self.__register_events()
     MultiCast.__actives.append(self)
   
-  def __enter_room(self, sid: str) -> None:
+  def __append_group(self, sid: str) -> None:
     """Ajoute un WebSocket à la boucle de diffusion.
 
     Arguments:
@@ -66,7 +66,7 @@ class MultiCast():
         routine: CoroutineType = self.__stream_loop()
         self.__task = create_task(routine)
       
-  def __leave_room(self, sid: str) -> None:
+  def __remove_group(self, sid: str) -> None:
     """Supprime un WebSocket de la boucle de diffusion.
 
     Arguments:
@@ -96,14 +96,14 @@ class MultiCast():
     """Enregistre les différents événements."""
     @websocket.on(self.__follow)
     def follow(sid: str) -> None:
-      self.__enter_room(sid)
+      self.__append_group(sid)
       
     @websocket.on(self.__unfollow)
     def unfollow(sid: str) -> None:
-      self.__leave_room(sid)
+      self.__remove_group(sid)
 
   @classmethod
   def cleanup_sid(cls, sid: str) -> None:
     """Retire un WebSocket de toutes les listes de diffusion lors d'un crash."""
-    for unicast in cls.__actives:
-      unicast.__leave_room(sid)
+    for active in cls.__actives:
+      active.__remove_group(sid)

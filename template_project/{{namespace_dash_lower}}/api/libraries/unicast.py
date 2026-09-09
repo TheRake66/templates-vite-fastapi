@@ -104,5 +104,5 @@ class UniCast():
   @classmethod
   def cleanup_sid(cls, sid: str) -> None:
     """Retire un WebSocket de toutes les listes de diffusion lors d'un crash."""
-    for unicast in cls.__actives:
-      unicast.__delete_sid(sid)
+    for active in cls.__actives:
+      active.__delete_sid(sid)

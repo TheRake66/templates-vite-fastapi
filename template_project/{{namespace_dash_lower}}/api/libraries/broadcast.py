@@ -70,12 +70,12 @@ class BroadCast():
   
   @classmethod
   def start_all(cls) -> None:
-    """Lance toutes les tâches si utilisateur est connecté."""
-    for unicast in cls.__actives:
-      unicast.__start_task()
+    """Lance toutes les tâches si un utilisateur est connecté."""
+    for active in cls.__actives:
+      active.__start_task()
   
   @classmethod
   def stop_all(cls) -> None:
     """Arrête toutes les tâches si aucun utilisateur n'est connecté."""
-    for unicast in cls.__actives:
-      unicast.__stop_task()
+    for active in cls.__actives:
+      active.__stop_task()
