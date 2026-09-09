@@ -25,7 +25,7 @@ from __future__ import annotations
 from services.websocket import websocket, emit_data
 from libraries.response import Response
 from asyncio import Task, CancelledError, sleep, create_task
-from typing import Callable, Awaitable, List
+from typing import Callable, Awaitable, List, Dict
 from types import CoroutineType
 
 # Type des fonctions à exécuter.
@@ -51,7 +51,7 @@ class UniCast():
     self.__receive: str = f"{name}#receive"
     self.__callback: UniTask = callback
     self.__interval: float = interval
-    self.__tasks: dict[str, Task] = {}
+    self.__tasks: Dict[str, Task] = {}
     self.__register_events()
     UniCast.__actives.append(self)
   
