@@ -22,17 +22,23 @@ Notes                 :
 from services.websocket import websocket, emit_data
 from libraries.response import Response
 from asyncio import Task, CancelledError, sleep, create_task
-from typing import Callable, Optional, Awaitable, List
-from types import CoroutineType
+from typing import Callable, Optional, List, Awaitable, Coroutine
 
-# Type des fonctions à exécuter.
-type MultiTask = Callable[[], Awaitable[Response]]
+type MultiTask = Callable[[List[str]], Awaitable[Response]]
+"""Fonction retournant les données à diffuser.
+
+Arguments:
+  List[str]: Liste des WebSockets présents dans la liste de diffusion.
+
+Returns:
+  Awaitable[Response]: Les données à diffuser aux WebSockets.
+"""
 
 class MultiCast():
   """Gère une boucle de diffusion pour un groupe de WebSocket."""
 
-  # Liste de toutes les listes de diffusion.
   __actives: List[MultiCast] = []
+  """Liste de toutes les listes de diffusion."""
   
   def __init__(self, name: str, callback: MultiTask, interval: float = 1.0) -> None:
     """Constructeur de la classe.
@@ -57,20 +63,20 @@ class MultiCast():
     """Ajoute un WebSocket à la boucle de diffusion.
 
     Arguments:
-      sid (str): ID du WebSocket à ajouter.
+      sid (str): L'identifiant du WebSocket à ajouter.
     """
     if not sid in self.__sids:
       self.__sids.append(sid)
       self.__count += 1
       if self.__count == 1:
-        routine: CoroutineType = self.__stream_loop()
+        routine: Coroutine = self.__stream_loop()
         self.__task = create_task(routine)
       
   def __remove_group(self, sid: str) -> None:
     """Supprime un WebSocket de la boucle de diffusion.
 
     Arguments:
-      sid (str): ID du WebSocket à supprimer.
+      sid (str): L'identifiant du WebSocket à supprimer.
     """
     if sid in self.__sids:
       self.__sids.remove(sid)
@@ -78,15 +84,11 @@ class MultiCast():
       if self.__count == 0:
         self.__task.cancel()
 
-  async def __stream_loop(self) -> CoroutineType:
-    """Tâche d'exécution pour les WebSockets.
-
-    Returns:
-      CoroutineType: Coroutine asynchrone.
-    """
+  async def __stream_loop(self) -> None:
+    """Tâche d'exécution pour les WebSockets."""
     try: 
       while True:
-        data: Response = await self.__callback()
+        data: Response = await self.__callback(self.__sids)
         for sid in self.__sids:
           await emit_data(self.__receive, data, sid)
         await sleep(self.__interval)
@@ -104,6 +106,10 @@ class MultiCast():
 
   @classmethod
   def cleanup_sid(cls, sid: str) -> None:
-    """Retire un WebSocket de toutes les listes de diffusion lors d'un crash."""
+    """Retire un WebSocket de toutes les listes de diffusion lors d'un crash.
+
+    Arguments:
+      sid (str): L'identifiant du WebSocket à supprimer.
+    """
     for active in cls.__actives:
       active.__remove_group(sid)

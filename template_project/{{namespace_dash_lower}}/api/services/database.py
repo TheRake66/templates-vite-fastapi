@@ -99,8 +99,8 @@ def get_database() -> Iterator[Session]:
   try: yield database
   finally: database.close()
 
-# Objet contenant la connexion à la base de données.
 engine: Engine = __init_engine()
+"""Objet contenant la connexion à la base de données."""
 
-# Objet faisant le lien entre l'ORM et l'engine.
 session: Session = __init_session()
+"""Objet faisant le lien entre l'ORM et l'engine."""

@@ -14,7 +14,6 @@ Notes                 :
 from libraries.configuration import configuration, Json
 from libraries.response import Response
 from socketio import AsyncServer
-from types import CoroutineType
 from typing import Optional
 
 def __init_asyncserver() -> AsyncServer:
@@ -56,21 +55,18 @@ def user_disconnected() -> int:
   __count -= 1
   return __count
 
-async def emit_data(event: str, data: Response, sid: Optional[str] = None) -> CoroutineType:
+async def emit_data(event: str, data: Response, sid: Optional[str] = None) -> None:
   """Envoi des données depuis le serveur.
 
   Arguments:
     event (str): Le nom de l'événement.
     data (Response): Les données à envoyer.
     sid (Optional[str]): L'identifiant du WebSocket cible. Aucun par défaut.
-
-  Returns:
-    CoroutineType: Coroutine asynchrone.
   """
   await websocket.emit(event, data.model_dump(), to=sid)
 
-# Nombre d'utilisateurs connectés.
 __count: int = 0
+"""Nombre d'utilisateurs connectés."""
 
-# Objet contenant le serveur de l'API REST.
 websocket: AsyncServer = __init_asyncserver()
+"""Objet contenant le serveur de l'API REST."""

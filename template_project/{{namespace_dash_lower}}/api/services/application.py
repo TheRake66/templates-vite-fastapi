@@ -34,5 +34,5 @@ def __init_asgiapp() -> ASGIApp:
   # On retourne le service.
   return application
 
-# Objet contenant le serveur de l'application.
 application: ASGIApp = __init_asgiapp()
+"""Objet contenant le serveur de l'application."""

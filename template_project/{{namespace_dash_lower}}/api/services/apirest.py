@@ -46,5 +46,5 @@ def __init_fastapi() -> FastAPI:
   # On retourne le service.
   return apirest
 
-# Objet contenant le serveur de l'API REST.
 apirest: FastAPI = __init_fastapi()
+"""Objet contenant le serveur de l'API REST."""

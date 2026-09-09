@@ -25,18 +25,24 @@ from __future__ import annotations
 from services.websocket import websocket, emit_data
 from libraries.response import Response
 from asyncio import Task, CancelledError, sleep, create_task
-from typing import Callable, Awaitable, List, Dict
-from types import CoroutineType
+from typing import Callable, List, Dict, Awaitable, Coroutine
 
-# Type des fonctions à exécuter.
 type UniTask = Callable[[str], Awaitable[Response]]
+"""Fonction retournant les données à diffuser.
+
+Arguments:
+  str: L'identifiant WebSockets en cours de traitement.
+
+Returns:
+  Awaitable[Response]: Les données à diffuser au WebSocket.
+"""
 
 class UniCast():
   """Gère une boucle de diffusion pour un groupe de WebSocket avec des données personnalisées 
   pour chaque WebSocket."""
 
-  # Liste de toutes les listes de diffusion.
   __actives: List[UniCast] = []
+  """Liste de toutes les listes de diffusion."""
   
   def __init__(self, name: str, callback: UniTask, interval: float = 1.0) -> None:
     """Constructeur de la classe.
@@ -72,17 +78,14 @@ class UniCast():
       sid (str): ID du WebSocket à ajouter.
     """
     if sid not in self.__tasks:
-      routine: CoroutineType = self.__stream_loop(sid)
+      routine: Coroutine = self.__stream_loop(sid)
       self.__tasks[sid] = create_task(routine)
 
-  async def __stream_loop(self, sid: str) -> CoroutineType:
+  async def __stream_loop(self, sid: str) -> None:
     """Tâche d'exécution pour un WebSocket unique.
 
     Arguments:
       sid (str): ID du WebSocket pour la tâche.
-
-    Returns:
-      CoroutineType: Coroutine asynchrone.
     """
     try:
       while True:
@@ -103,6 +106,10 @@ class UniCast():
   
   @classmethod
   def cleanup_sid(cls, sid: str) -> None:
-    """Retire un WebSocket de toutes les listes de diffusion lors d'un crash."""
+    """Retire un WebSocket de toutes les listes de diffusion lors d'un crash.
+
+    Arguments:
+      sid (str): L'identifiant du WebSocket à supprimer.
+    """
     for active in cls.__actives:
       active.__delete_sid(sid)

@@ -20,17 +20,20 @@ Notes                 :
 from libraries.response import Response
 from services.websocket import emit_data
 from asyncio import Task, CancelledError, sleep, create_task
-from typing import Callable, Awaitable, List, Optional
-from types import CoroutineType
+from typing import Callable, List, Optional, Awaitable, Coroutine
 
-# Type des fonctions à exécuter.
 type BroadTask = Callable[[], Awaitable[Response]]
+"""Fonction retournant les données à diffuser.
+
+Returns:
+  Awaitable[Response]: Les données à diffuser aux WebSockets.
+"""
 
 class BroadCast():
   """Gère une boucle de diffusion pour tous les WebSockets."""
 
-  # Liste de toutes les listes de diffusion.
   __actives: List[BroadCast] = []
+  """Liste de toutes les listes de diffusion."""
   
   def __init__(self, name: str, callback: BroadTask, interval: float = 1.0) -> None:
     """Constructeur de la classe.
@@ -48,19 +51,15 @@ class BroadCast():
   
   def __start_task(self) -> None:
     """Lance la tâche pour la boucle."""
-    routine: CoroutineType = self.__stream_loop()
+    routine: Coroutine = self.__stream_loop()
     self.__task = create_task(routine)
   
   def __stop_task(self) -> None:
     """Arrête la tâche pour la boucle."""
     self.__task.cancel()
 
-  async def __stream_loop(self) -> CoroutineType:
-    """Tâche d'exécution pour les WebSockets.
-
-    Returns:
-      CoroutineType: Coroutine asynchrone.
-    """
+  async def __stream_loop(self) -> None:
+    """Tâche d'exécution pour les WebSockets."""
     try:
       while True:
         data: Response = await self.__callback()
