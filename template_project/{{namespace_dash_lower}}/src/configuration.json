@@ -3,7 +3,7 @@
     "name": "{{namespace_dash_lower}}",
     "version": "1.0.0",
     "author": "{{creator_name}}",
-    "github": "https://github.com/{{creator_name}}/{{lower_name}}"
+    "github": "https://github.com/{{creator_name}}/{{namespace_dash_lower}}"
   },
   "default": {
     "language": "{{language_short}}",
@@ -21,9 +21,9 @@
   "backend": {
     "address": "localhost",
     "port": 8000,
-    "wspath": "/socket.io",
-    "version": "v1",
     "ssl": false,
+    "version": "v1",
+    "wspath": "/socket.io",
     "timeout": 10000
   },
   "analytics": {

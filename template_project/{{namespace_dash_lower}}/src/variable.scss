@@ -13,24 +13,24 @@
 
 :root {
   /**
-  * Autres.
-  */
+   * Autres.
+   */
   --transition: all .1s linear;
   --line-space: 30px;
   --border: solid 1px;
   --scrollbar: 4px;
   
   /**
-  * Espacement entre les lettres.
-  */
+   * Espacement entre les lettres.
+   */
   --letter-spacing: 2px;
   --letter-spacing-large: 4px;
   --letter-spacing-xlarge: 6px;
   --letter-spacing-title: 12px;
 
   /**
-  * Taille de police d'écriture.
-  */
+   * Taille de police d'écriture.
+   */
   --font-xsmall: 8px;
   --font-small: 12px;
   --font: 16px;
@@ -39,8 +39,8 @@
   --font-title: 64px;
 
   /**
-  * Taille du rayon d'arrondissement.
-  */
+   * Taille du rayon d'arrondissement.
+   */
   --radius-xsmall: 5px;
   --radius-small: 10px;
   --radius: 15px;
@@ -49,8 +49,8 @@
   --radius-round: 64px;
 
   /**
-  * Taille des espacements internes.
-  */
+   * Taille des espacements internes.
+   */
   --padding-xsmall: 8px;
   --padding-small: 16px;
   --padding: 32px;
@@ -58,8 +58,8 @@
   --padding-xlarge: 96px;
 
   /**
-  * Taille des espacements externes.
-  */
+   * Taille des espacements externes.
+   */
   --margin-xsmall: 8px;
   --margin-small: 16px;
   --margin: 32px;
@@ -67,8 +67,8 @@
   --margin-xlarge: 96px;
 
   /**
-  * Taille des ombres.
-  */
+   * Taille des ombres.
+   */
   --shadow-xsmall: 0px 0px 5px;
   --shadow-small: 0px 0px 10px;
   --shadow: 0px 0px 15px;
