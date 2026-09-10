@@ -11,7 +11,7 @@
  * Notes                 : 
  */
 
-import config from '../react.json';
+import config from '../configuration.json';
 
 const defaultState = config.default.fullscreen;
 const storageKey = config.storage.fullscreen;

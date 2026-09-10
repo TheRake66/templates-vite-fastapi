@@ -16,7 +16,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import ReactGA from 'react-ga4';
-import config from '../react.json';
+import config from '../configuration.json';
 
 /**
  * Initialise l'état de la librairie Google Analytics avec le Google ID

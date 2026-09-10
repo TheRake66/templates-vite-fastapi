@@ -36,8 +36,7 @@ def __init_engine() -> Engine:
   engine: Engine = create_engine(url, echo=config["debug"])
   
   # Création des tables.
-  if config["create"]:
-    __create_all(engine)
+  if config["create"]: __create_all(engine)
   
   # On retourne le service.
   return engine
@@ -72,8 +71,7 @@ def __get_sqlite(config: Json) -> str:
   Returns:
     str: L'URL de connexion.
   """
-  return "sqlite:///:memory:" if config["memory"] else \
-        f"sqlite:///{config["dbpath"]}"
+  return "sqlite:///{}".format(":memory:" if config["memory"] else config["dbpath"])
 
 def __get_remote(config: Json) -> str:
   """Retourne l'URL de connexion pour une base distante.
@@ -85,9 +83,12 @@ def __get_remote(config: Json) -> str:
     str: L'URL de connexion.
   """
   remote: Json = config["remote"]
-  credential: str = f"{remote["username"]}:{remote["password"]}"
-  connection: str = f"{remote["address"]}:{remote["port"]}"
-  return f"{remote["driver"]}://{credential}@{connection}/{config["dbpath"]}"
+  return "{}://{}:{}@{}:{}/{}".format(
+    remote["driver"],
+    remote["username"], remote["password"],
+    remote["address"], remote["port"],
+    remote["dbname"])
+
 
 def get_database() -> Iterator[Session]:
   """Crée un générateur pour les dépendances.

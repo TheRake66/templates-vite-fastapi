@@ -11,7 +11,7 @@
  * Notes                 : 
  */
 
-import config from '../react.json';
+import config from '../configuration.json';
 import type { ThemeType } from '../enums/theme.type.ts';
 
 const defaultTheme = config.default.theme;

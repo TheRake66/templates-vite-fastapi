@@ -1,6 +1,6 @@
 {
   "apirest": {
-    "title": "{{title_name}}",
+    "title": "{{namespace_dash_lower}}",
     "description": "",
     "version": "v1",
     "credentials": true,
@@ -9,13 +9,24 @@
     "headers": ["*"]
   },
   "websocket": {
-    "origins": ["*"],
     "urlpath": "/socket.io",
+    "origins": ["*"],
     "debug": true
+  },
+  "repository": {
+    "memory": true,
+    "decode": true,
+    "remote": {
+      "username": "admin",
+      "password": "admin",
+      "address": "localhost",
+      "port": 6379,
+      "index": 0
+    }
   },
   "database": {
     "sqlite": true,
-    "dbpath": "{{lower_name}}.db",
+    "dbpath": "{{namespace_dash_lower}}.db",
     "create": true,
     "memory": false,
     "debug": true,
@@ -24,7 +35,8 @@
       "username": "admin",
       "password": "admin",
       "address": "localhost",
-      "port": 5432
+      "port": 5432,
+      "dbname": "{{namespace_dash_lower}}"
     }
   }
 }

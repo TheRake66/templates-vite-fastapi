@@ -11,9 +11,11 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
+from services.repository import get_remote, manager
 from libraries.configuration import configuration, Json
 from libraries.response import Response
-from socketio import AsyncServer
+from socketio import AsyncServer, AsyncRedisManager
+from redis.asyncio import Redis
 from typing import Optional
 
 def __init_asyncserver() -> AsyncServer:
@@ -25,12 +27,18 @@ def __init_asyncserver() -> AsyncServer:
   # Chargement de la configuration.
   config: Json = configuration["websocket"]
   
+  # Définition du manager Redis.
+  client: Optional[AsyncRedisManager] = None
+  if isinstance(manager, Redis):
+    client = AsyncRedisManager(get_remote())
+  
   # Définition du serveur.
   websocket: AsyncServer = AsyncServer(
     async_mode="asgi",
     cors_allowed_origins=config["origins"],
     engineio_logger=config["debug"],
-    logger=config["debug"])
+    logger=config["debug"],
+    client_manager=client)
   
   # On retourne le service.
   return websocket

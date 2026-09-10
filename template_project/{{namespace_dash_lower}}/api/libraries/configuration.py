@@ -13,12 +13,17 @@ Notes                 :
 
 from __future__ import annotations
 from typing import Dict, List, Union
+from pathlib import Path
 from json import load
 
-# Type d'un objet JSON.
-type JsonValue = Union[str, int, float, bool, None]
-type Json = Union[JsonValue, List[Json], Dict[str, Json]]
+__FILE_NAME: str = "configuration.json"
+"""Nom du fichier de configuration."""
 
-# Dictionnaire de la configuration de FastAPI.
-with open("fastapi.json") as buffer:
-  configuration: Json = load(buffer)
+type JsonValue = Union[str, int, float, bool, None]
+"""Type d'une valeur JSON."""
+
+type Json = Union[JsonValue, List[Json], Dict[str, Json]]
+"""Type d'un objet JSON."""
+
+configuration: Json = load(Path(__FILE_NAME).read_text())
+"""Dictionnaire contenant la configuration."""

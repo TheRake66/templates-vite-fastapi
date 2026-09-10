@@ -13,7 +13,7 @@
 
 import axios from 'axios';
 import { io, Socket } from 'socket.io-client';
-import config from '../react.json';
+import config from '../configuration.json';
 
 interface BackConfig {
   address: string;

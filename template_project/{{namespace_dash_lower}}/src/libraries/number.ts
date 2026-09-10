@@ -11,7 +11,7 @@
  * Notes                 : 
  */
 
-import config from '../react.json';
+import config from '../configuration.json';
 
 const defaultLang = config.default.language;
 
