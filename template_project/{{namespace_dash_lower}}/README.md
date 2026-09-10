@@ -1,5 +1,3 @@
-<div align="center">
-  <img src="./banner.jpg" alt="{{namespace_dash_lower}}" width=100%>
-</div>
+![Banner](./banner.jpg)
 
 # {{namespace_dash_lower}}
