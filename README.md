@@ -48,7 +48,7 @@ from libraries.response import Response
 from libraries.unicast import UniCast
 
 async def say_hello(sid: str) -> Response:
-  return Response(message=f"Hello user with ID: {sid}!")
+  return Response(message=f"Hello user with with id {sid}!")
 
 # User will receive a message every 3 seconds.
 UniCast("hello", say_hello, 3)
@@ -75,8 +75,8 @@ useEffect(() => {
 from libraries.response import Response
 from libraries.multicast import MultiCast
 
-async def say_hello(sids: List[str]) -> Response:
-  return Response(message=f"Hello to {len(sids)} users!")
+async def say_hello(sids: Tuple[str]) -> Response:
+  return Response(message=f"Hello to {len(sids)} users in this loop!")
 
 # Users in group will receive a message every 3 seconds.
 MultiCast("hello", say_hello, 3)
@@ -103,8 +103,8 @@ useEffect(() => {
 from libraries.response import Response
 from libraries.broadcast import BroadCast
 
-async def say_hello() -> Response:
-  return Response(message="Hello to all users!")
+async def say_hello(sids: Tuple[str]) -> Response:
+  return Response(message=f"Hello to {len(sids)} users in this server pool!")
 
 # All users will receive a message every 3 seconds.
 BroadCast("hello", say_hello, 3)

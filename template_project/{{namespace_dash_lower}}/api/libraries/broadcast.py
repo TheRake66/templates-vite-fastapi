@@ -15,15 +15,22 @@ Notes                 :
   Pour éviter de surcharger uniquement le serveur, on coupe toutes les listes de diffusion
   si aucun utilisateur n'est connecté. Il suffit d'utiliser "start_all" lors de l'événement 
   "connect" et "stop_all" lors de l'événement "disconnect".
+  
+  On utilise une liste d'utilisateurs indépendante de Socket.IO (emit global) pour éviter les
+  doublons à cause de Redis s'il y a plusieurs instances de serveur. Chaque instance a sa
+  propre liste à gérer.
 """
 
 from libraries.response import Response
-from services.websocket import emit_data
+from services.websocket import emit_data, get_users
 from asyncio import Task, CancelledError, sleep, create_task
-from typing import Callable, List, Optional, Awaitable, Coroutine
+from typing import Callable, List, Optional, Awaitable, Coroutine, Tuple
 
-type BroadTask = Callable[[], Awaitable[Response]]
+type BroadTask = Callable[[Tuple[str]], Awaitable[Response]]
 """Fonction retournant les données à diffuser.
+
+Arguments:
+  Tuple[str]: Liste des WebSockets connectés au serveur.
 
 Returns:
   Awaitable[Response]: Les données à diffuser aux WebSockets.
@@ -62,8 +69,10 @@ class BroadCast():
     """Tâche d'exécution pour les WebSockets."""
     try:
       while True:
-        data: Response = await self.__callback()
-        await emit_data(self.__event, data)
+        sids: Tuple[str] = get_users()
+        data: Response = await self.__callback(sids)
+        for sid in sids:
+          await emit_data(self.__event, data, sid)
         await sleep(self.__interval)
     except CancelledError: pass
   

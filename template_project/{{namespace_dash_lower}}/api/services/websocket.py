@@ -15,8 +15,8 @@ from services.repository import get_remote, manager
 from libraries.configuration import configuration, Json
 from libraries.response import Response
 from socketio import AsyncServer, AsyncRedisManager
+from typing import Optional, List, Tuple
 from redis.asyncio import Redis
-from typing import Optional
 
 def __init_asyncserver() -> AsyncServer:
   """Initialise le service AsyncServer.
@@ -43,25 +43,41 @@ def __init_asyncserver() -> AsyncServer:
   # On retourne le service.
   return websocket
 
-def user_connected() -> int:
+def user_connected(sid: str) -> int:
   """Incrémente le compteur du nombre d'utilisateurs.
+
+  Arguments:
+      sid (str): L'identifiant du WebSocket qui se connecte.
 
   Returns:
     int: Le nombre d'utilisateurs connectés.
   """
-  global __count
+  global __count, __users
+  __users.append(sid)
   __count += 1
   return __count
 
-def user_disconnected() -> int:
+def user_disconnected(sid: str) -> int:
   """Décrémente le compteur du nombre d'utilisateurs.
+
+  Arguments:
+      sid (str): L'identifiant du WebSocket qui se déconnecte.
 
   Returns:
     int: Le nombre d'utilisateurs connectés.
   """
-  global __count
+  global __count, __users
+  __users.remove(sid)
   __count -= 1
   return __count
+
+def get_users() -> Tuple[str]:
+  """Retourne la liste des utilisateurs connectés.
+
+  Returns:
+      List[str]: La liste des utilisateurs connectés.
+  """
+  return tuple(__users)
 
 async def emit_data(event: str, data: Response, sid: Optional[str] = None) -> None:
   """Envoi des données depuis le serveur.
@@ -72,6 +88,9 @@ async def emit_data(event: str, data: Response, sid: Optional[str] = None) -> No
     sid (Optional[str]): L'identifiant du WebSocket cible. Aucun par défaut.
   """
   await websocket.emit(event, data.model_dump(), to=sid)
+
+__users: List[str] = []
+"""Liste des utilisateurs connectés."""
 
 __count: int = 0
 """Nombre d'utilisateurs connectés."""

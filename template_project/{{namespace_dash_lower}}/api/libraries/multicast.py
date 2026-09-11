@@ -17,18 +17,22 @@ Notes                 :
 
   En cas de crash, l'événement "unfollow" ne survient pas, il faut donc retirer
   manuellement le WebSocket lors de l'événement "disconnect" en appelant "cleanup_sid".
+  
+  On utilise une liste d'utilisateurs indépendante de Socket.IO (emit room) pour éviter les
+  doublons à cause de Redis s'il y a plusieurs instances de serveur. Chaque instance a sa
+  propre liste à gérer.
 """
 
 from services.websocket import websocket, emit_data
 from libraries.response import Response
 from asyncio import Task, CancelledError, sleep, create_task
-from typing import Callable, Optional, List, Awaitable, Coroutine
+from typing import Callable, Optional, List, Awaitable, Coroutine, Tuple
 
-type MultiTask = Callable[[List[str]], Awaitable[Response]]
+type MultiTask = Callable[[Tuple[str]], Awaitable[Response]]
 """Fonction retournant les données à diffuser.
 
 Arguments:
-  List[str]: Liste des WebSockets présents dans la liste de diffusion.
+  Tuple[str]: Liste des WebSockets présents dans la liste de diffusion.
 
 Returns:
   Awaitable[Response]: Les données à diffuser aux WebSockets.
@@ -88,8 +92,9 @@ class MultiCast():
     """Tâche d'exécution pour les WebSockets."""
     try: 
       while True:
-        data: Response = await self.__callback(self.__sids)
-        for sid in self.__sids:
+        sids: Tuple[str] = tuple(self.__sids)
+        data: Response = await self.__callback(sids)
+        for sid in sids:
           await emit_data(self.__receive, data, sid)
         await sleep(self.__interval)
     except CancelledError: pass

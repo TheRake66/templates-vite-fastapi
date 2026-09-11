@@ -31,7 +31,7 @@ async def root() -> None:
 # Gestion de la connexion aux WebSockets.
 @websocket.event
 async def connect(sid: str, environ: Dict[str, Any]) -> None:
-  if user_connected() == 1:
+  if user_connected(sid) == 1:
     BroadCast.start_all()
 
 # Gestion de la déconnexion aux WebSockets.
@@ -39,5 +39,5 @@ async def connect(sid: str, environ: Dict[str, Any]) -> None:
 async def disconnect(sid: str) -> None:
   UniCast.cleanup_sid(sid)
   MultiCast.cleanup_sid(sid)
-  if user_disconnected() == 0:
+  if user_disconnected(sid) == 0:
     BroadCast.stop_all()
