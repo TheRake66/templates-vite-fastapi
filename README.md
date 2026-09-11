@@ -7,7 +7,7 @@ This is a set of templates for creating web applications with:
   * [FastAPI](https://fastapi.tiangolo.com/): Framework for building API REST.
   * [Socket.IO](https://socket.io): Event-driven library for real-time communication.
   * [SQLAlchemy](https://www.sqlalchemy.org/): SQL toolkit and Object Relational Mapper.
-  * [Redis](https://redis.io/): In-memory data structure store used as a database
+  * [Redis](https://redis.io/): In-memory data structure store used as a database.
 
 It uses the [Fast](https://github.com/TheRake66/python-fast) file generator.
 
