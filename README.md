@@ -43,7 +43,7 @@ You have three classes for managing broadcast lists with regular data delivery o
 ### Example using UniCast
 
 ```py
-# api/routes/hello.py
+# backend/routes/hello.py
 from libraries.response import Response
 from libraries.unicast import UniCast
 
@@ -55,7 +55,7 @@ UniCast("hello", say_hello, 3)
 ```
 
 ```tsx
-// src/pages/hello.tsx
+// frontend/sources/pages/hello.tsx
 import { socket } from '../services/backend.ts';
 
 useEffect(() => {
@@ -71,7 +71,7 @@ useEffect(() => {
 ### Example using MultiCast
 
 ```py
-# api/routes/hello.py
+# backend/routes/hello.py
 from libraries.response import Response
 from libraries.multicast import MultiCast
 
@@ -83,7 +83,7 @@ MultiCast("hello", say_hello, 3)
 ```
 
 ```tsx
-// src/pages/hello.tsx
+// frontend/sources/pages/hello.tsx
 import { socket } from '../services/backend.ts';
 
 useEffect(() => {
@@ -99,7 +99,7 @@ useEffect(() => {
 ### Example using BroadCast
 
 ```py
-# api/routes/hello.py
+# backend/routes/hello.py
 from libraries.response import Response
 from libraries.broadcast import BroadCast
 
@@ -111,7 +111,7 @@ BroadCast("hello", say_hello, 3)
 ```
 
 ```tsx
-// src/pages/hello.tsx
+// frontend/sources/pages/hello.tsx
 import { socket } from '../services/backend.ts';
 
 useEffect(() => {

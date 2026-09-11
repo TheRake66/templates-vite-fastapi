@@ -28,25 +28,36 @@ def __init_manager() -> Union[Redis, FakeRedis]:
   # Définition du serveur.
   manager: Union[Redis, FakeRedis] = \
     FakeRedis(config["decode"]) if config["memory"] else \
-    Redis(get_remote(), config["decode"])
+    Redis(__url, config["decode"])
 
   # On retourne le service
   return manager
 
-def get_remote(config: Yaml) -> str:
-  """Retourne l'URL de connexion pour un dépôt de cache distant.
-
-  Arguments:
-    config (Json): La configuration du dépôt de cache.
+def __build_remote() -> str:
+  """Construit et retourne l'URL de connexion pour un dépôt de cache distant.
 
   Returns:
     str: L'URL de connexion.
   """
-  remote: Yaml = config["remote"]
+  # Chargement de la configuration.
+  remote: Yaml = configuration["repository"]["remote"]
+  
+  # On retourne l"URL construite.
   return "redis://{}:{}@{}:{}/{}".format(
     remote["username"], remote["password"],
     remote["address"], remote["port"],
     remote["index"])
+
+def get_remote() -> str:
+  """Retourne l'URL de connexion pour un dépôt de cache distant.
+
+  Returns:
+    str: L'URL de connexion.
+  """
+  return __url
+
+__url: str = __build_remote()
+"""L'URL de connexion pour un dépôt de cache distant."""
 
 manager: Union[Redis, FakeRedis] = __init_manager()
 """Objet contenant la connexion au dépôt de cache."""

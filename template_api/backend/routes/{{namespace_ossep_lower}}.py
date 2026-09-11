@@ -20,7 +20,7 @@ from fastapi import APIRouter
 
 # Point d'entrée de {{title_name}}.
 NAMESPACE: str = "{{namespace_dash_lower}}"
-URLPATH: str = "{{namespace_back_lower}}"
+URLPATH: str = "{{namespace_slash_lower}}"
 
 # Routeur pour l'API REST de {{title_name}}.
 router: APIRouter = APIRouter(prefix=f"/{URLPATH}")
