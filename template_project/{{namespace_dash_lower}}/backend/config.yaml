@@ -1,0 +1,45 @@
+# Configuration de l'API REST.
+apirest:
+  title: {{namespace_dash_lower}} # Titre pour Swagger UI.
+  description: ""                 # Description pour Swagger UI.
+  version: v1                     # Version pour le routage.
+  credentials: false              # Autorise l'envoi de cookies de session.
+  origins:                        # Origines CORS autorisées.
+    - "*"
+  methods:                        # Méthodes HTTP autorisées.
+    - "*"
+  headers:                        # En-têtes HTTP autorisées.
+    - "*"
+
+# Configuration du serveur WebSocket.
+websocket:
+  urlpath: /socket.io # Point de terminaison.
+  debug: true         # Active les logs de débogage.
+  origins:            # Origines CORS autorisées.
+    - "*"
+
+# Configuration du dépôt de cache.
+repository:
+  memory: true         # Utilise un Redis factice pour le développement.
+  decode: true         # Décode automatiquement les données récupérées.
+  remote:              # Connexion distante en cas de Redis réel.
+    username: admin    # Nom d'utilisateur.
+    password: admin    # Mot de passe associé.
+    address: localhost # Adresse IP ou nom d'hôte.
+    port: 6379         # Port de connexion.
+    index: 0           # Index du dépôt cible.
+
+# Configuration de la base de données principale
+database:
+  sqlite: true                        # Utilise une base SQLite locale.
+  dbpath: {{namespace_dash_lower}}.db # Chemin du fichier de base de données.
+  create: true                        # Crée automatiquement les tables.
+  memory: false                       # Stocke temporairement la base en mémoire.
+  debug: true                         # Active les logs de débogage.
+  remote:                             # Connexion distante en cas de base non SQLite.
+    driver: postgresql+psycopg2       # Pilote SQL de la base.
+    username: admin                   # Nom d'utilisateur.
+    password: admin                   # Mot de passe associé.
+    address: localhost                # Adresse IP ou nom d'hôte.
+    port: 5432                        # Port de connexion.
+    dbname: {{namespace_dash_lower}}  # Nom de la base de données.

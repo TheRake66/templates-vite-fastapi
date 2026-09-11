@@ -11,7 +11,7 @@
  * Notes                 : 
  */
 
-import config from '../configuration.json';
+import config from '../config.yaml';
 
 const defaultLang = config.default.language;
 

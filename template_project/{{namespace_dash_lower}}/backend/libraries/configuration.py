@@ -13,17 +13,17 @@ Notes                 :
 
 from __future__ import annotations
 from typing import Dict, List, Union
+from yaml import safe_load
 from pathlib import Path
-from json import load
 
-__FILE_NAME: str = "configuration.json"
+__FILE_NAME: str = "config.yaml"
 """Nom du fichier de configuration."""
 
-type JsonValue = Union[str, int, float, bool, None]
-"""Type d'une valeur JSON."""
+type YamlValue = Union[str, int, float, bool, None]
+"""Type d'une valeur Yaml."""
 
-type Json = Union[JsonValue, List[Json], Dict[str, Json]]
-"""Type d'un objet JSON."""
+type Yaml = Union[YamlValue, List[Yaml], Dict[str, Yaml]]
+"""Type d'un objet Yaml."""
 
-configuration: Json = load(Path(__FILE_NAME).read_text())
+configuration: Yaml = safe_load(Path(__FILE_NAME).read_text("utf-8"))
 """Dictionnaire contenant la configuration."""

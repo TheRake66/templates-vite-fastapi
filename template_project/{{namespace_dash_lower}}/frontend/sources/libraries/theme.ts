@@ -11,7 +11,7 @@
  * Notes                 : 
  */
 
-import config from '../configuration.json';
+import config from '../config.yaml';
 import type { ThemeType } from '../enums/theme.type.ts';
 
 const defaultTheme = config.default.theme;

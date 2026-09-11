@@ -11,7 +11,7 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from libraries.configuration import configuration, Json
+from libraries.configuration import configuration, Yaml
 from libraries.autoload import import_all
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
@@ -23,7 +23,7 @@ def __init_fastapi() -> FastAPI:
     FastAPI: Le service FastAPI.
   """
   # Chargement de la configuration.
-  config: Json = configuration["apirest"]
+  config: Yaml = configuration["apirest"]
   
   # Définition du serveur.
   apirest: FastAPI = FastAPI(

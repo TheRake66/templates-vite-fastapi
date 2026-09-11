@@ -11,7 +11,7 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from libraries.configuration import configuration, Json
+from libraries.configuration import configuration, Yaml
 from libraries.autoload import import_all
 from libraries.ormbase import OrmBase
 from sqlalchemy.orm import sessionmaker, Session
@@ -25,7 +25,7 @@ def __init_engine() -> Engine:
     Engine: Le service Engine.
   """
   # Chargement de la configuration.
-  config: Json = configuration["database"]
+  config: Yaml = configuration["database"]
 
   # Récupération de l'URL de connexion.
   url: str = \
@@ -62,7 +62,7 @@ def __create_all(engine: Engine) -> None:
   import_all("bases")
   OrmBase.metadata.create_all(engine)
 
-def __get_sqlite(config: Json) -> str:
+def __get_sqlite(config: Yaml) -> str:
   """Retourne l'URL de connexion pour SQLite.
 
   Arguments:
@@ -73,7 +73,7 @@ def __get_sqlite(config: Json) -> str:
   """
   return "sqlite:///{}".format(":memory:" if config["memory"] else config["dbpath"])
 
-def __get_remote(config: Json) -> str:
+def __get_remote(config: Yaml) -> str:
   """Retourne l'URL de connexion pour une base distante.
 
   Arguments:
@@ -82,7 +82,7 @@ def __get_remote(config: Json) -> str:
   Returns:
     str: L'URL de connexion.
   """
-  remote: Json = config["remote"]
+  remote: Yaml = config["remote"]
   return "{}://{}:{}@{}:{}/{}".format(
     remote["driver"],
     remote["username"], remote["password"],

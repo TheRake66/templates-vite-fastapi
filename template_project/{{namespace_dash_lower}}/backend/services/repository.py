@@ -11,7 +11,7 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from libraries.configuration import configuration, Json
+from libraries.configuration import configuration, Yaml
 from fakeredis.aioredis import FakeRedis
 from redis.asyncio import Redis
 from typing import Union
@@ -23,7 +23,7 @@ def __init_manager() -> Union[Redis, FakeRedis]:
     Union[Redis, FakeRedis]: Le service Manager.
   """
   # Chargement de la configuration.
-  config: Json = configuration["repository"]
+  config: Yaml = configuration["repository"]
   
   # Définition du serveur.
   manager: Union[Redis, FakeRedis] = \
@@ -33,7 +33,7 @@ def __init_manager() -> Union[Redis, FakeRedis]:
   # On retourne le service
   return manager
 
-def get_remote(config: Json) -> str:
+def get_remote(config: Yaml) -> str:
   """Retourne l'URL de connexion pour un dépôt de cache distant.
 
   Arguments:
@@ -42,7 +42,7 @@ def get_remote(config: Json) -> str:
   Returns:
     str: L'URL de connexion.
   """
-  remote: Json = config["remote"]
+  remote: Yaml = config["remote"]
   return "redis://{}:{}@{}:{}/{}".format(
     remote["username"], remote["password"],
     remote["address"], remote["port"],

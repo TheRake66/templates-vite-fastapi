@@ -11,7 +11,7 @@ Licence               : GPL-3.0
 Notes                 : 
 """
 
-from libraries.configuration import configuration, Json
+from libraries.configuration import configuration, Yaml
 from services.websocket import websocket
 from services.apirest import apirest
 from socketio import ASGIApp
@@ -23,7 +23,7 @@ def __init_asgiapp() -> ASGIApp:
     ASGIApp: Le service ASGIApp.
   """
   # Chargement de la configuration.
-  config: Json = configuration["websocket"]
+  config: Yaml = configuration["websocket"]
   
   # Définition du serveur.
   application: ASGIApp = ASGIApp(

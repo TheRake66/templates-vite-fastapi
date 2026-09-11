@@ -13,19 +13,19 @@
 
 import axios from 'axios';
 import { io, Socket } from 'socket.io-client';
-import config from '../configuration.json';
+import config from '../config.yaml';
 
 interface BackConfig {
   address: string;
   port: number;
   version: string;
   wspath: string;
-  ssl: boolean;
+  secure: boolean;
   timeout: number;
 }
 
 const backend: BackConfig = config.backend;
-const protocol: string = backend.ssl ? 'https' : 'http';
+const protocol: string = backend.secure ? 'https' : 'http';
 
 /**
  * Objet contenant la connexion à l'API REST.

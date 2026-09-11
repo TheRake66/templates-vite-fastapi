@@ -12,7 +12,7 @@ Notes                 :
 """
 
 from services.repository import get_remote, manager
-from libraries.configuration import configuration, Json
+from libraries.configuration import configuration, Yaml
 from libraries.response import Response
 from socketio import AsyncServer, AsyncRedisManager
 from typing import Optional, List, Tuple
@@ -25,7 +25,7 @@ def __init_asyncserver() -> AsyncServer:
     AsyncServer: Le service AsyncServer.
   """
   # Chargement de la configuration.
-  config: Json = configuration["websocket"]
+  config: Yaml = configuration["websocket"]
   
   # Définition du manager Redis.
   client: Optional[AsyncRedisManager] = None

@@ -1,0 +1,34 @@
+# Informations de l'application.
+assembly:
+  name: {{namespace_dash_lower}}                                       # Nom de l'application.
+  version: 1.0.0                                                       # Version de l'application.
+  author: {{creator_name}}                                             # Auteur de l'application.
+  github: https://github.com/{{creator_name}}/{{namespace_dash_lower}} # Lien vers le depot de code.
+
+# Valeurs par défaut pour les librairies.
+default:
+  language: {{language_short}} # Langue par défaut de l'application.
+  theme: light                 # Thème graphique par défaut (clair/sombre).
+  fullscreen: false            # Active ou désactive le mode plein écran par défaut.
+
+# Nom des cookies utilisés dans les librairies.
+cookies: {}
+
+# Nom des stockages utilisés dans les librairies.
+storage:
+  language: language     # Clé de stockage local pour la langue.
+  theme: theme           # Clé de stockage local pour le thème.
+  fullscreen: fullscreen # Clé de stockage local pour le mode plein écran.
+
+# Configuration du serveur d'API.
+backend:
+  address: localhost # Adresse du serveur d'API.
+  port: 8000         # Port d'écoute du serveur d'API.
+  secure: false      # Indique si les connexions doivent être sécurisées (HTTPS).
+  version: v1        # Version de l'API.
+  wspath: /socket.io # Chemin d'accès pour les WebSockets (Socket.IO).
+  timeout: 10000     # Délai d'attente (timeout) en millisecondes.
+
+# Configuration de Google Analytics.
+analytics:
+  googleid: G- # Identifiant de suivi Google Analytics.
